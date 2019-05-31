@@ -1,0 +1,14 @@
+<resources>
+
+    <string name="app_name">BuberApp</string>
+
+    <!-- Strings array for type_spinner -->
+    <string-array name="watercraftTypes">
+        <item>Select your watercraft type</item>
+        <item>Speedboat</item>
+        <item>Sailboat</item>
+        <item>Catamaran</item>
+        <item>Yacht</item>
+    </string-array>
+
+</resources>
