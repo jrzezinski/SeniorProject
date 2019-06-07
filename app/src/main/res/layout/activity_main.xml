@@ -10,6 +10,39 @@
     android:padding="20dp"
     tools:context=".MainActivity">
 
+    <!-- User designation Text -->
+    <TextView
+        android:id="@+id/greet_rider_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rider Login"
+        android:textSize="30dp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/greet_captain_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Captain Login"
+        android:textSize="30dp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/greet_rider_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rider Signup"
+        android:textSize="30dp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/greet_captain_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Captain Signup"
+        android:textSize="30dp"
+        android:gravity="center"/>
+
     <!-- Switch to enable Sign up options -->
     <Switch
         android:id="@+id/signup_switch"
