@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
@@ -25,6 +26,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Spinner typeSelect;
     private Switch signupSwitch;
     private Switch captainSwitch;
+
+    // Greeter fields from xml form
+    private TextView capSignup;
+    private TextView riderSignup;
+    private TextView capLogin;
+    private TextView riderLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,6 +47,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         typeSelect = findViewById(R.id.type_spinner);
         signupSwitch = findViewById(R.id.signup_switch);
         captainSwitch = findViewById(R.id.captain_switch);
+
+        // Initialize greeter fields from xml form
+        capSignup = findViewById(R.id.greet_captain_signup);
+        riderSignup = findViewById(R.id.greet_rider_signup);
+        capLogin = findViewById(R.id.greet_captain_login);
+        riderLogin = findViewById(R.id.greet_rider_login);
 
         // Fill in the spinner with the String Array in strings.xml
         Spinner spinner = findViewById(R.id.type_spinner);
@@ -58,6 +71,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // Listen for Switch changes
         signupSwitch.setOnCheckedChangeListener(this);
         captainSwitch.setOnCheckedChangeListener(this);
+
+        // show appropriate greeting
+        capSignup.setVisibility(View.GONE);
+        riderSignup.setVisibility(View.GONE);
+        capLogin.setVisibility(View.GONE);
+        riderLogin.setVisibility(View.VISIBLE);
     }
 
     // The four check functions use local validation ***Just for testing***
@@ -135,27 +154,41 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-    // Check app input, if good show popup
+    // Check app input, if good go to next page
     public void confirmInput(View v)
     {
-        // leaves method if any of the tests are false
-        if(!checkEmail() | !checkPass() | !checkName() | !checkPhone())
+        if(signupSwitch.isChecked() && captainSwitch.isChecked())
         {
-            return;
+            // Captain Signup field checks
+            if(!checkEmail() | !checkPass() | !checkName() | !checkPhone())
+            {
+                return;
+            }
         }
-
-        /*
-        // Test display text
-        String display = "Email: " + textEmail.getEditText().getText().toString();
-        display += "\n";
-        display += "Password: " + textPassword.getEditText().getText().toString();
-        display += "\n";
-        display += "Name: " + textName.getEditText().getText().toString();
-        display += "\n";
-        display += "Phone: " + textPhone.getEditText().getText().toString();
-
-        Toast.makeText(this, display, Toast.LENGTH_SHORT).show();
-        */
+        else if(signupSwitch.isChecked())
+        {
+            // User Signup field check
+            if(!checkEmail() | !checkPass() | !checkName() | !checkPhone())
+            {
+                return;
+            }
+        }
+        else if(captainSwitch.isChecked())
+        {
+            // Captain Signup field check
+            if(!checkEmail() | !checkPass())
+            {
+                return;
+            }
+        }
+        else
+        {
+            // User Login field check
+            if(!checkEmail() | !checkPass())
+            {
+                return;
+            }
+        }
 
         // Open second page/activity (UserHome)
         Intent intent = new Intent(this, UserHome.class);
@@ -185,6 +218,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             textName.setVisibility(View.VISIBLE);
             textPhone.setVisibility(View.VISIBLE);
             typeSelect.setVisibility(View.VISIBLE);
+
+            // show appropriate greeting
+            capSignup.setVisibility(View.VISIBLE);
+            riderSignup.setVisibility(View.GONE);
+            capLogin.setVisibility(View.GONE);
+            riderLogin.setVisibility(View.GONE);
         }
         // signup switch check, reveals/hides fields for user signup
         else if(signupSwitch.isChecked())
@@ -192,12 +231,38 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             textName.setVisibility(View.VISIBLE);
             textPhone.setVisibility(View.VISIBLE);
             typeSelect.setVisibility(View.GONE);
+
+            // show appropriate greeting
+            capSignup.setVisibility(View.GONE);
+            riderSignup.setVisibility(View.VISIBLE);
+            capLogin.setVisibility(View.GONE);
+            riderLogin.setVisibility(View.GONE);
+
+        }
+        else if(captainSwitch.isChecked())
+        {
+            textName.setVisibility(View.GONE);
+            textPhone.setVisibility(View.GONE);
+            typeSelect.setVisibility(View.GONE);
+
+            // show appropriate greeting
+            capSignup.setVisibility(View.GONE);
+            riderSignup.setVisibility(View.GONE);
+            capLogin.setVisibility(View.VISIBLE);
+            riderLogin.setVisibility(View.GONE);
+
         }
         else
         {
             textName.setVisibility(View.GONE);
             textPhone.setVisibility(View.GONE);
             typeSelect.setVisibility(View.GONE);
+
+            // show appropriate greeting
+            capSignup.setVisibility(View.GONE);
+            riderSignup.setVisibility(View.GONE);
+            capLogin.setVisibility(View.GONE);
+            riderLogin.setVisibility(View.VISIBLE);
         }
     }
 }
