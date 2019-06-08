@@ -26,7 +26,14 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <!-- add the google map fragment to the activity layout -->
+        <!-- test container -->
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+        <!-- add the google map fragment to the activity layout
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:map="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
@@ -34,7 +41,9 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+        -->
 
+        <!-- Search box layout -->
         <RelativeLayout
             android:id="@+id/search_layout"
             android:layout_width="match_parent"
@@ -45,6 +54,7 @@
             android:elevation="10dp"
             android:background="#fff">
 
+            <!-- Magnifying glass image in search bar -->
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -53,6 +63,7 @@
                 android:src="@drawable/ic_search"
                 android:id="@+id/ic_search"/>
 
+            <!-- Text field in search bar -->
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
