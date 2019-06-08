@@ -11,7 +11,7 @@
     tools:openDrawer="end">
 
     <!-- activity layout -->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -35,7 +35,41 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/search_layout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="75dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:elevation="10dp"
+            android:background="#fff">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/ic_search"
+                android:id="@+id/ic_search"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:maxLines="1"
+                android:inputType="text"
+                android:layout_toRightOf="@+id/ic_search"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="15dp"
+                android:textColor="#000"
+                android:hint="Search Address, City, State, or ZIP code"
+                android:imeOptions="actionSearch"
+                android:id="@+id/search_text"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
     <!-- add the pullout navigation menu to the activity -->
     <android.support.design.widget.NavigationView
