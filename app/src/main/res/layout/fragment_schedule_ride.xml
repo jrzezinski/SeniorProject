@@ -1,13 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_bright">
+    android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Schedule Ride"
-        android:textSize="30dp"
-        android:layout_centerInParent="true" />
+    <!-- fragments are placed in this container -->
+    <FrameLayout
+        android:id="@+id/ride_map_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="50">
 
-</RelativeLayout>
+        <!-- add the google map fragment to the activity layout -->
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map_schedule"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
+    <!-- checkout info container -->
+    <RelativeLayout
+        android:id="@+id/payment_info_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="50">
+
+        <TextView
+            android:id="@+id/cruise_prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Direct to location?"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="40dp"
+            android:textSize="20dp" />
+
+        <Switch
+            android:id="@+id/cruise_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="50dp"
+            android:scaleX="1.25"
+            android:layout_toRightOf="@+id/cruise_prompt"
+            android:checked="true"/>
+
+        <TextView
+            android:id="@+id/cost_mile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cost per Mile"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_alignStart="@+id/cruise_prompt"
+            android:layout_below="@+id/cruise_prompt"/>
+
+        <TextView
+            android:id="@+id/val_mile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$TempValue"
+            android:textSize="20dp"
+            android:layout_toRightOf="@+id/cost_mile"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/cruise_switch"
+            android:layout_alignStart="@+id/cruise_switch"/>
+
+        <TextView
+            android:id="@+id/cost_estimate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estimated Cost"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_alignStart="@+id/cost_mile"
+            android:layout_below="@+id/cost_mile"/>
+
+        <TextView
+            android:id="@+id/val_estimate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$TempValue"
+            android:textSize="20dp"
+            android:layout_toRightOf="@+id/cost_estimate"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/val_mile"
+            android:layout_alignStart="@+id/cruise_switch"/>
+
+        <TextView
+            android:id="@+id/time_estimate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estimated Time"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/cost_estimate"
+            android:layout_alignStart="@+id/cost_estimate"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:30:00"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_alignStart="@+id/val_estimate"
+            android:layout_below="@+id/val_estimate"/>
+
+        <Button
+            android:id="@+id/schedule_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Schedule your ride"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/time_estimate"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+</LinearLayout>
