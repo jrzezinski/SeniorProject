@@ -1,6 +1,8 @@
 <resources>
 
     <string name="app_name">BuberApp</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
 
     <!-- Strings array for type_spinner -->
     <string-array name="watercraftTypes">
