@@ -32,9 +32,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private TextView riderSignup;
     private TextView capLogin;
     private TextView riderLogin;
-    
-    // To read and write from database
-    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
