@@ -34,7 +34,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.android.gms:play-services-maps:16.1.0' //Added for project
-    implementation 'com.google.firebase:firebase-core:16.0.9' //Android Firebase added for project 
+    implementation 'com.google.firebase:firebase-core:16.0.9' //Android Firebase added for project
+    implementation 'com.google.firebase:firebase-admin:6.8.1' //Android SDK admin added 
 }
 
 apply plugin: 'com.google.gms.google-services'
