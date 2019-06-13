@@ -32,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private TextView riderSignup;
     private TextView capLogin;
     private TextView riderLogin;
+    
+    //Cloud Firestore Instance 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
