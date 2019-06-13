@@ -162,11 +162,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     {
         if(signupSwitch.isChecked() && captainSwitch.isChecked())
         {
-            // Captain Signup field checks
-            if(!checkEmail() | !checkPass() | !checkName() | !checkPhone())
-            {
-                return;
-            }
+            // Reference Captain Collection
+            CollectionReference captainCollectionRef = db.collection("captain");
+            
+                // Captain Signup field checks
+                if(!checkEmail() | !checkPass() | !checkName() | !checkPhone())
+                {
+                    return;
+                }
         }
         else if(signupSwitch.isChecked())
         {
