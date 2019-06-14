@@ -195,7 +195,7 @@ public class MapFragment extends Fragment, Service implements OnMapReadyCallback
         return latitude;
         }
 
-    public double obtainLongitude()
+    public double getLongitude()
         {
             if (location != null)
                 {
