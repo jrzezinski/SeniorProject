@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.app.Service;
+import android.content.Context;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,10 +33,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapFragment extends Fragment, Service implements OnMapReadyCallback, LocationListener //now implementing LocationListener and extending Service
+public class MapFragment extends Fragment implements OnMapReadyCallback, LocationListener //now implementing LocationListener and extending Service
 {
     private GoogleMap mMap;
     private EditText searchText;
+    private final Context mContext;
 
     //to update the gps for every distance change of 10 meters AND every period of time equal to 1 minute
     private static final long distanceUpdate = 10;
@@ -91,9 +94,10 @@ public class MapFragment extends Fragment, Service implements OnMapReadyCallback
         try
         {
             list = geocoder.getFromLocationName(searchString, 1);
-        }catch (IOException e)
+        }
+        catch (Exception e)
         {
-
+            e.printStackTrace();
         }
 
         // if there is at least one address get the first
@@ -113,98 +117,105 @@ public class MapFragment extends Fragment, Service implements OnMapReadyCallback
         }
     }
 
-    //establish context with user session and call locationRetrieval
-    public userSession(Context context) 
-    {
-        this.mContext = context;
-        locationRetrieval();
-    }
+    public class GPSTracker extends Service implements LocationListener {
 
-    public Location locationRetrieval()
-    {
-       try {
+        private final Context mContext;
 
-            //for this context obtain location service
-            locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+        // flag for GPS status
+        boolean isGPSEnabled = false;
 
-            //obtain GPS status by inquiring on GPS_PROVIDER
-            GPSStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        // flag for network status
+        boolean isNetworkEnabled = false;
 
-            //obtain network status by inquiring on NETWORK_PROVIDER
-            networkStatus = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        // flag for GPS status
+        boolean canGetLocation = false;
+
+        Location location; // location
+        double latitude; // latitude
+        double longitude; // longitude
 
 
-            //if networkStatus is true, then we have network status
-            if (networkStatus)
-            {
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-                if (locationManager != null)
-                {
-                    location = locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeUpdate, distanceUpdate, this); //if locationManager is still good obtain updates. this is the function: requestLocationUpdates(String provider, long minTime, float minDistance, LocationListener listener)
-                    if (location != null) //get coordinates if location is not blank
-                        {
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
-                        }
-                }
-                //opposite case request from GPS string provider
-                if (location == null)
-                {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-                    if (locationManager != null)
-                    {
-                        location = locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER);
-                        if (location != null)
-                        {
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
-                         }
-                         else
-                         {
-                            location = locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER);
-                            if (location != null)
-                            {
-                                 latitude = location.getLatitude();
-                                 longitude = location.getLongitude();
-                             }
-                          }
-                      }
-                   }
-                }
-            }
-            else
-            {
-                log.d("No network status")
-            }
-        catch (IOException e)
-        {
-            
+        // The minimum distance to change Updates in meters
+        private static final long distanceUpdate = 5; // 5 meters
+
+        // The minimum time between updates in milliseconds
+        private static final long timeUpdate= 1000 * 60 * 1; // 1 minute
+
+        // Declaring a Location Manager
+        protected LocationManager locationManager;
+
+        public GPSTracker(Context context) {
+            this.mContext = context;
+            getLocation();
         }
 
-        return location;
-    }
+        public Location getLocation() {
+            try {
+                locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
 
+                // getting GPS status
+                boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-    //obtain coordinates when called in
-    public double getLatitude()
-        {
-        if (location != null)
-            {
+                // getting network status
+                boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+                if (!isGPSEnabled && !isNetworkEnabled) {
+                    // no network provider is enabled
+                } else {
+                    this.canGetLocation = true;
+                    // First get location from Network Provider
+                    if (isNetworkEnabled) {
+                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeUpdate, distanceUpdate, this);
+                        if (locationManager != null) {
+                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                            if (location != null) {
+                                latitude = location.getLatitude();
+                                longitude = location.getLongitude();
+                            }
+                        }
+                    }
+                    if (location == null) {
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate, distanceUpdate, this);
+
+                        if (locationManager != null) {
+                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                            if (location != null) {
+                                latitude = location.getLatitude();
+                                longitude = location.getLongitude();
+                            } else {
+                                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                if (location != null) {
+                                    latitude = location.getLatitude();
+                                    longitude = location.getLongitude();
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return location;
+        }
+
+        public double getLatitude() {
+            if (location != null) {
                 latitude = location.getLatitude();
             }
-        return latitude;
+
+            // return latitude
+            return latitude;
         }
 
-    public double getLongitude()
-        {
-            if (location != null)
-                {
-                    longitude = location.getLongitude();
-                }
+        public double getLongitude() {
+            if (location != null) {
+                longitude = location.getLongitude();
+            }
 
-             return longitude;
+            // return longitude
+            return longitude;
         }
-
     // Google maps added method for map load response
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -221,4 +232,4 @@ public class MapFragment extends Fragment, Service implements OnMapReadyCallback
 
         initMapSearch();
     }
-}
+}}
