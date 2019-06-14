@@ -17,6 +17,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+//for the retrieveLocation stuff
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.app.Service;
+import android.content.Context;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -28,10 +35,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback
+public class MapFragment extends Fragment implements OnMapReadyCallback, LocationListener //now implementing LocationListener and extending Service
 {
     private GoogleMap mMap;
     private EditText searchText;
+
     private FragmentMapListener listener;
     private Button toScheduleButton;
 
@@ -40,6 +48,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
         void onInputMapSent(CharSequence input);
     }
 
+    private final Context mContext;
+
+    //to update the gps for every distance change of 10 meters AND every period of time equal to 1 minute
+    private static final long distanceUpdate = 10;
+    private static final long timeUpdate = 1000 * 60 * 1;
+
+
+    //declaring a location manager for locationRetrieval()
+    protected LocationManager locationManager;
+    
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
@@ -133,9 +151,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
         try
         {
             list = geocoder.getFromLocationName(searchString, 1);
-        }catch (IOException e)
+        }
+        catch (Exception e)
         {
-
+            e.printStackTrace();
         }
 
         // if there is at least one address get the first
@@ -160,6 +179,105 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
         return null;
     }
 
+    public class GPSTracker extends Service implements LocationListener {
+
+        private final Context mContext;
+
+        // flag for GPS status
+        boolean isGPSEnabled = false;
+
+        // flag for network status
+        boolean isNetworkEnabled = false;
+
+        // flag for GPS status
+        boolean canGetLocation = false;
+
+        Location location; // location
+        double latitude; // latitude
+        double longitude; // longitude
+
+
+        // The minimum distance to change Updates in meters
+        private static final long distanceUpdate = 5; // 5 meters
+
+        // The minimum time between updates in milliseconds
+        private static final long timeUpdate= 1000 * 60 * 1; // 1 minute
+
+        // Declaring a Location Manager
+        protected LocationManager locationManager;
+
+        public GPSTracker(Context context) {
+            this.mContext = context;
+            getLocation();
+        }
+
+        public Location getLocation() {
+            try {
+                locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+
+                // getting GPS status
+                boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+                // getting network status
+                boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+                if (!isGPSEnabled && !isNetworkEnabled) {
+                    // no network provider is enabled
+                } else {
+                    this.canGetLocation = true;
+                    // First get location from Network Provider
+                    if (isNetworkEnabled) {
+                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeUpdate, distanceUpdate, this);
+                        if (locationManager != null) {
+                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                            if (location != null) {
+                                latitude = location.getLatitude();
+                                longitude = location.getLongitude();
+                            }
+                        }
+                    }
+                    if (location == null) {
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate, distanceUpdate, this);
+
+                        if (locationManager != null) {
+                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                            if (location != null) {
+                                latitude = location.getLatitude();
+                                longitude = location.getLongitude();
+                            } else {
+                                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                if (location != null) {
+                                    latitude = location.getLatitude();
+                                    longitude = location.getLongitude();
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return location;
+        }
+
+        public double getLatitude() {
+            if (location != null) {
+                latitude = location.getLatitude();
+            }
+
+            // return latitude
+            return latitude;
+        }
+
+        public double getLongitude() {
+            if (location != null) {
+                longitude = location.getLongitude();
+            }
+
+            // return longitude
+            return longitude;
+        }
     // Google maps added method for map load response
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -176,4 +294,4 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
 
         initMapSearch();
     }
-}
+}}

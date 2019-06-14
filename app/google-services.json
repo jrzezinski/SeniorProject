@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "405189280663",
+    "firebase_url": "https://seniorproject-master.firebaseio.com",
+    "project_id": "seniorproject-master",
+    "storage_bucket": "seniorproject-master.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405189280663:android:5b1491e893bf34d3",
+        "android_client_info": {
+          "package_name": "group.project.buberapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "405189280663-50no59ufgr19runki98r5hvkvgjaq9gs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2nfMypbWcOctrC9AhE_N8ELcngtpZWxw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "405189280663-50no59ufgr19runki98r5hvkvgjaq9gs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
