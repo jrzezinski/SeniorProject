@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true //needed because of a previous error "Error: null, Cannot fit requested classes in a single dex file (# methods: 100824 > 65536)"
     }
     buildTypes {
         release {
@@ -46,6 +47,8 @@ dependencies {
 
     // FirebaseUI (for authentication)
     implementation 'com.firebaseui:firebase-ui-auth:4.3.2'
+
+    implementation 'com.android.support:multidex:1.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'
