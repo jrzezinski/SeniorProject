@@ -142,30 +142,29 @@ public class MapFragment extends Fragment, Service implements OnMapReadyCallback
                             longitude = location.getLongitude();
                         }
                 }
-                    }
-                    //opposite case request from GPS string provider
-                    if (location == null)
-                     {
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-                        if (locationManager != null)
+                //opposite case request from GPS string provider
+                if (location == null)
+                {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+                    if (locationManager != null)
+                    {
+                        location = locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER);
+                        if (location != null)
                         {
-                            location = locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER);
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+                         }
+                         else
+                         {
+                            location = locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER);
                             if (location != null)
                             {
-                                latitude = location.getLatitude();
-                                longitude = location.getLongitude();
-                            }
-                            else
-                            {
-                                location = locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER);
-                                if (location != null)
-                                    {
-                                        latitude = location.obtainLatitude();
-                                        longitude = location.obtainLongitude();
-                                    }
-                            }
-                        }
-                    }
+                                 latitude = location.getLatitude();
+                                 longitude = location.getLongitude();
+                             }
+                          }
+                      }
+                   }
                 }
             }
             else
@@ -182,7 +181,7 @@ public class MapFragment extends Fragment, Service implements OnMapReadyCallback
 
 
     //obtain coordinates when called in
-    public double obtainLatitude()
+    public double getLatitude()
         {
         if (location != null)
             {
