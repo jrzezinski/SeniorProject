@@ -1,6 +1,7 @@
 package group.project.buberapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,6 +23,7 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
     private GoogleMap mMap;
     private LatLng location;
     private ScheduleRideFragment.FragmentScheduleListener listener;
+    private Button launchPayButton;
 
     public interface FragmentScheduleListener
     {
@@ -33,10 +36,21 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
     {
         // initialize variables
         View view = inflater.inflate(R.layout.fragment_schedule_ride, container, false);
+        launchPayButton = view.findViewById(R.id.schedule_button);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map_schedule);
         mapFragment.getMapAsync(this);
+
+        launchPayButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(getActivity(), PaymentActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
 
         return view;
     }

@@ -17,6 +17,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA6jrlBfNiyH5-7RPHxmOLQxPpQIB3Rqa8" />
 
+        <!-- Payment page -->
+        <activity
+            android:name=".PaymentActivity"
+            android:theme="@style/AppTheme">
+        </activity>
+
         <!-- User home page -->
         <activity
             android:name=".UserHome"
