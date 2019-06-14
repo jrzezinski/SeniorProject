@@ -14,13 +14,11 @@ import android.os.IBinder;
 
 import android.util.Log;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-public class GPSTracker extends Service implements LocationListener, OnMapReadyCallback {
+public class GPSTracker extends Service implements LocationListener {
 
     private final Context mContext;
     private GoogleMap mMap;
@@ -40,7 +38,6 @@ public class GPSTracker extends Service implements LocationListener, OnMapReadyC
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
-
 
     public double getLatitude() { //returning void but it used to be double when returning latitude
         if (location != null) {
@@ -69,7 +66,7 @@ public class GPSTracker extends Service implements LocationListener, OnMapReadyC
     }
 
     @SuppressLint("MissingPermission")
-    public Location getLocation() {
+    public LatLng getLocation() {
         try {
             locationManager = (LocationManager) mContext
                     .getSystemService(LOCATION_SERVICE);
@@ -122,8 +119,14 @@ public class GPSTracker extends Service implements LocationListener, OnMapReadyC
             e.printStackTrace();
         }
 
-        return location; //where location is returned
+        LatLng currentLocation  = new LatLng(latitude, longitude);
+
+        return currentLocation; //where location is returned
     }
+
+
+
+
 
     @Override
     public void onLocationChanged(Location location) {
@@ -145,17 +148,5 @@ public class GPSTracker extends Service implements LocationListener, OnMapReadyC
     public IBinder onBind(Intent arg0) {
         return null;
     }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // zoom functionality
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.getUiSettings().setAllGesturesEnabled(true);
-
-        LatLng currentLocation  = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-    }
+    
 }
