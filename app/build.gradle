@@ -43,6 +43,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.9' //Android Firebase added for project
     implementation 'com.google.firebase:firebase-admin:6.8.1' //Android SDK admin added
     implementation 'com.google.firebase:firebase-firestore:19.0.2' //Android Firestore added
+
+    implementation 'com.android.support:recyclerview-v7:28.0.0' //Help fragment scroll window
+    implementation 'com.google.dagger:dagger:2.0'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
