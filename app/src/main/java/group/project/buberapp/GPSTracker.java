@@ -6,8 +6,6 @@ import android.content.Context;
 
 import android.content.Intent;
 
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,13 +14,16 @@ import android.os.IBinder;
 
 import android.util.Log;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class GPSTracker extends Service implements LocationListener {
+public class GPSTracker extends Service implements LocationListener, OnMapReadyCallback {
 
     private final Context mContext;
+    private GoogleMap mMap;
 
     // flag for GPS status
     boolean isGPSEnabled = false;
@@ -34,21 +35,36 @@ public class GPSTracker extends Service implements LocationListener {
     boolean canGetLocation = false;
 
     Location location; // location
-    double latitude; // latitude
-    double longitude; // longitude
-    int geocoderMaxResults = 1;
-
-    // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
-
-    // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+    double latitude;
+    double longitude;
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
 
-    public GPSTracker(Context context) {
+
+    public double getLatitude() { //returning void but it used to be double when returning latitude
+        if (location != null) {
+            latitude = location.getLatitude();
+        }
+
+        // return latitude?
+
+        return latitude;
+    }
+
+    public double getLongitude() { //returning void but it used to be double when returning longitude
+        if (location != null) {
+            location.getLongitude();
+        }
+
+        return longitude;
+
+    }
+
+
+    public GPSTracker(Context context, GoogleMap mMap) {
         this.mContext = context;
+        this.mMap = mMap;
         getLocation();
     }
 
@@ -75,8 +91,8 @@ public class GPSTracker extends Service implements LocationListener {
                     if (locationManager != null) {
                         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if (location != null) {
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
+                            getLatitude();
+                            getLongitude();
                         }
                     }
                 }
@@ -90,13 +106,13 @@ public class GPSTracker extends Service implements LocationListener {
                         location = locationManager
                                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if (location != null) {
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
+                            getLatitude();
+                            getLongitude();
                         } else {
                             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             if (location != null) {
-                                latitude = location.getLatitude();
-                                longitude = location.getLongitude();
+                                getLatitude();
+                                getLongitude();
                             }
                         }
                     }
@@ -108,49 +124,6 @@ public class GPSTracker extends Service implements LocationListener {
 
         return location; //where location is returned
     }
-
-
-    public double getLatitude() {
-        if (location != null) {
-            latitude = location.getLatitude();
-        }
-
-        // return latitude
-        return latitude;
-    }
-
-    /**
-     * Function to get longitude
-     */
-    public double getLongitude() {
-        if (location != null) {
-            longitude = location.getLongitude();
-        }
-
-        // return longitude
-        return longitude;
-    }
-
-    public List<Address> getGeocoderAddress(Context context) {
-        if (location != null) {
-
-            Geocoder geocoder = new Geocoder(context, Locale.ENGLISH);
-
-            try {
-                List<Address> addresses = geocoder.getFromLocation(latitude, longitude, this.geocoderMaxResults);
-
-                return addresses;
-
-            } catch (IOException e) {
-                //e.printStackTrace();
-                Log.e("TAG", "Impossible to connect to Geocoder", e);
-            }
-        }
-
-        return null;
-    }
-
-
 
     @Override
     public void onLocationChanged(Location location) {
@@ -173,4 +146,16 @@ public class GPSTracker extends Service implements LocationListener {
         return null;
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // zoom functionality
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setAllGesturesEnabled(true);
+
+        LatLng currentLocation  = new LatLng(latitude, longitude);
+        mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+    }
 }
