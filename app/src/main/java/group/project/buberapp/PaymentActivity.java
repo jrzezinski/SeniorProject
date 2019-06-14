@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -45,9 +47,10 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
     // Declare variables
     String token,amount;
     HashMap<String,String> paramsHash;
-    Button btn_pay;
-    EditText edt_amount;
-    LinearLayout group_waiting,group_payment;
+    Button payButton;
+    TextView paymentAmount;
+    RelativeLayout group_waiting,group_payment;
+    String finalCost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -56,16 +59,19 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
         setContentView(R.layout.activity_payment);
 
         // initialize variables
-        group_payment = (LinearLayout) findViewById(R.id.payment_group);
-        group_waiting = (LinearLayout) findViewById(R.id.waiting_group);
-        edt_amount = (EditText)findViewById(R.id.edt_amount);
-        btn_pay = (Button) findViewById(R.id.btn_pay);
+        group_payment = (RelativeLayout) findViewById(R.id.payment_group);
+        group_waiting = (RelativeLayout) findViewById(R.id.waiting_group);
+        paymentAmount = (TextView)findViewById(R.id.payment_amount);
+        payButton = (Button) findViewById(R.id.payment_button);
+        finalCost = getIntent().getStringExtra("EXTRA_Final_COST");
+
+        paymentAmount.setText(finalCost);
 
         // getToken from server
         new getToken().execute();
 
         // Listen for button click event
-        btn_pay.setOnClickListener(new View.OnClickListener()
+        payButton.setOnClickListener(new View.OnClickListener()
                                        {
                                             @Override
                                             public void onClick(View view)
@@ -99,10 +105,10 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
                 String strNonce = nonce.getNonce();
 
                 // send info if amount given
-                if(!edt_amount.getText().toString().isEmpty())
+                if(!paymentAmount.getText().toString().isEmpty())
                 {
                     // get payment amount from user field and nonce
-                    amount = edt_amount.getText().toString();
+                    amount = paymentAmount.getText().toString();
                     paramsHash = new HashMap<>();
                     paramsHash.put("amount",amount);
                     paramsHash.put("nonce",strNonce);

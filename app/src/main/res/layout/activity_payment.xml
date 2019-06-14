@@ -10,7 +10,7 @@
     android:padding="20dp"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:visibility="gone"
         android:id="@+id/waiting_group"
         android:layout_centerInParent="true"
@@ -22,9 +22,9 @@
             android:layout_height="wrap_content"
             android:text="Trying to get token, please wait..."/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/payment_group"
         android:layout_centerInParent="true"
         android:layout_width="match_parent"
@@ -32,38 +32,43 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/title_price_final"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Checkout"
+            android:layout_centerHorizontal="true"
+            android:text="Final Trip Price"
             android:textStyle="bold"
+            android:layout_marginBottom="30dp"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_price_final"
+            android:layout_toLeftOf="@+id/payment_amount"
+            android:layout_alignTop="@+id/payment_amount"
+            android:text="$"
             android:textSize="30dp"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/payment_amount"
+            android:text="333"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp">
-
-            <EditText
-                android:id="@+id/edt_amount"
-                android:hint="Choose payment amount"
-                android:inputType="number"
-                android:imeOptions="actionDone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-            
-        </android.support.design.widget.TextInputLayout>
+            android:layout_centerHorizontal="true"
+            android:textSize="30dp"
+            android:layout_below="@+id/title_price_final"/>
 
         <!-- Sign in button -->
         <Button
-            android:id="@+id/btn_pay"
+            android:id="@+id/payment_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Confirm"
             android:imeOptions="actionDone"
-            android:layout_marginTop="50dp" />
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/payment_amount"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>
