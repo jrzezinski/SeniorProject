@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -33,12 +34,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class UserHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MapFragment.FragmentMapListener, ScheduleRideFragment.FragmentScheduleListener {
 
     private DrawerLayout drawer;
+    private MapFragment mapFragment;
+    ScheduleRideFragment scheduleRideFragment;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
 
@@ -46,6 +50,8 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
         drawer = findViewById(R.id.user_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        mapFragment = new MapFragment();
+        scheduleRideFragment = new ScheduleRideFragment();
 
         // Set the toolbar Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -62,6 +68,51 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+    }
+
+    // search user input location on the map
+    private LatLng searchLocation(String searchString)
+    {
+        // user text
+        LatLng location;
+
+        // init geolocation and get user text address lat and long
+        Geocoder geocoder = new Geocoder(this);
+        List<Address> list = new ArrayList<>();
+        try
+        {
+            list = geocoder.getFromLocationName(searchString, 1);
+        }catch (IOException e)
+        {
+
+        }
+
+        // if there is at least one address get the first
+        if(list.size() > 0)
+        {
+            // get lat and long info and map marker
+            Address address = list.get(0);
+            location = new LatLng(address.getLatitude(), address.getLongitude());
+            MarkerOptions options = new MarkerOptions().position(location);
+
+            return location;
+        }
+
+        return null;
+    }
+
+    // send lat and long data and open schedule a ride fragment
+    @Override
+    public void onInputMapSent(CharSequence input)
+    {
+        scheduleRideFragment.updateSearchText(searchLocation(input.toString()));
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, scheduleRideFragment).commit();
+    }
+
+    @Override
+    public void onInputScheduleSent(LatLng input)
+    {
+
     }
 
     // Redirect navigation item selection to correct fragment

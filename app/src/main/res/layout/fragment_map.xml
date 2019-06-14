@@ -48,4 +48,13 @@
 
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/map_checkout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:text="Go to schedule a ride"
+        android:visibility="gone"/>
+
 </RelativeLayout>

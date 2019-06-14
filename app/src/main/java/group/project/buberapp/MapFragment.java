@@ -1,5 +1,6 @@
 package group.project.buberapp;
 
+import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -30,6 +32,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
 {
     private GoogleMap mMap;
     private EditText searchText;
+    private FragmentMapListener listener;
+    private Button toScheduleButton;
+
+    public interface FragmentMapListener
+    {
+        void onInputMapSent(CharSequence input);
+    }
 
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -37,12 +46,56 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
         // initialize variables
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         searchText = view.findViewById(R.id.search_text);
+        toScheduleButton = view.findViewById(R.id.map_checkout_button);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        // send info to underlying activity
+        toScheduleButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                CharSequence input = searchText.getText();
+                listener.onInputMapSent(input);
+            }
+        });
+
         return view;
+    }
+
+    // update search on checkout of fragment_schedule_ride
+    public void updateSearchText(CharSequence locationText)
+    {
+        searchText.setText(locationText);
+    }
+
+    // initialize listener on attach
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+
+        // check to make sure underlying activity implements FragmentMapListener
+        if(context instanceof FragmentMapListener)
+        {
+            listener = (FragmentMapListener) context;
+        }
+        else
+        {
+            throw new RuntimeException(context.toString() + " must implement FragmentMapListener");
+        }
+    }
+
+    // wipe listener as it is not needed
+    @Override
+    public void onDetach()
+    {
+        super.onDetach();
+
+        listener = null;
     }
 
     private void initMapSearch()
@@ -59,7 +112,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
                         || event.getAction() == KeyEvent.KEYCODE_ENTER)
                 {
                     // run search function
-                    searchLocation();
+                    searchLocation(searchText.getText().toString());
+                    toScheduleButton.setVisibility(View.VISIBLE);
                 }
 
                 return false;
@@ -68,10 +122,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
     }
 
     // search user input location on the map
-    private void searchLocation()
+    private LatLng searchLocation(String searchString)
     {
         // user text
-        String searchString = searchText.getText().toString();
+        LatLng location;
 
         // init geolocation and get user text address lat and long
         Geocoder geocoder = new Geocoder(getActivity());
@@ -89,7 +143,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
         {
             // get lat and long info and map marker
             Address address = list.get(0);
-            LatLng location = new LatLng(address.getLatitude(), address.getLongitude());
+            location = new LatLng(address.getLatitude(), address.getLongitude());
             MarkerOptions options = new MarkerOptions().position(location);
 
             // move camera to lat and long and set pin
@@ -98,7 +152,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
 
             // hide keyboard
             this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+            // return the searched location
+            return location;
         }
+
+        return null;
     }
 
     // Google maps added method for map load response

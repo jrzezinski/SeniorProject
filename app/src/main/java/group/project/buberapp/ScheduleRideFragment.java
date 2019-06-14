@@ -1,5 +1,6 @@
 package group.project.buberapp;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
 {
     private GoogleMap mMap;
+    private LatLng location;
+    private ScheduleRideFragment.FragmentScheduleListener listener;
+
+    public interface FragmentScheduleListener
+    {
+        void onInputScheduleSent(LatLng input);
+    }
 
     @Nullable
     @Override
@@ -33,10 +41,43 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
         return view;
     }
 
+    // update search on checkout of fragment_schedule_ride
+    public void updateSearchText(LatLng locationText)
+    {
+       location = locationText;
+    }
+
+    // initialize listener on attach
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+
+        // check to make sure underlying activity implements FragmentMapListener
+        if(context instanceof ScheduleRideFragment.FragmentScheduleListener)
+        {
+            listener = (ScheduleRideFragment.FragmentScheduleListener) context;
+        }
+        else
+        {
+            throw new RuntimeException(context.toString() + " must implement FragmentScheduleListener");
+        }
+    }
+
+    // wipe listener as it is not needed
+    @Override
+    public void onDetach()
+    {
+        super.onDetach();
+
+        listener = null;
+    }
+
     // Google maps added method for map load response
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        MarkerOptions options = new MarkerOptions().position(location);
 
         // zoom functionality
         mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -45,6 +86,19 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.0f));
+
+        if(location != null)
+        {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15.0f));
+
+            // move camera to lat and long and set pin
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15.0f));
+            mMap.addMarker(options);
+        }
+        else
+        {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.0f));
+        }
+
     }
 }
