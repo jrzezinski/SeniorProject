@@ -77,7 +77,6 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        MarkerOptions options = new MarkerOptions().position(location);
 
         // zoom functionality
         mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -93,6 +92,7 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
 
             // move camera to lat and long and set pin
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15.0f));
+            MarkerOptions options = new MarkerOptions().position(location);
             mMap.addMarker(options);
         }
         else
