@@ -15,6 +15,11 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+//for the retrieveLocation stuff
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
