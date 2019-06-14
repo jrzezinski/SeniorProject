@@ -26,11 +26,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback
+public class MapFragment extends Fragment, Service implements OnMapReadyCallback, LocationListener //now implementing LocationListener and extending Service
 {
     private GoogleMap mMap;
     private EditText searchText;
 
+    //to update the gps for every distance change of 10 meters AND every period of time equal to 1 minute
+    private static final long distanceUpdate = 10;
+    private static final long timeUpdate = 1000 * 60 * 1;
+
+    //declaring a location manager for locationRetrieval()
+    protected LocationManager locationManager;
+    
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
@@ -100,6 +107,99 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
             this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }
     }
+
+    //establish context with user session and call locationRetrieval
+    public userSession(Context context) 
+    {
+        this.mContext = context;
+        locationRetrieval();
+    }
+
+    public Location locationRetrieval()
+    {
+       try {
+
+            //for this context obtain location service
+            locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+
+            //obtain GPS status by inquiring on GPS_PROVIDER
+            GPSStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            //obtain network status by inquiring on NETWORK_PROVIDER
+            networkStatus = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+
+            //if networkStatus is true, then we have network status
+            if (networkStatus)
+            {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+                if (locationManager != null)
+                {
+                    location = locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeUpdate, distanceUpdate, this); //if locationManager is still good obtain updates. this is the function: requestLocationUpdates(String provider, long minTime, float minDistance, LocationListener listener)
+                    if (location != null) //get coordinates if location is not blank
+                        {
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+                        }
+                }
+                    }
+                    //opposite case request from GPS string provider
+                    if (location == null)
+                     {
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+                        if (locationManager != null)
+                        {
+                            location = locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER);
+                            if (location != null)
+                            {
+                                latitude = location.getLatitude();
+                                longitude = location.getLongitude();
+                            }
+                            else
+                            {
+                                location = locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER);
+                                if (location != null)
+                                    {
+                                        latitude = location.obtainLatitude();
+                                        longitude = location.obtainLongitude();
+                                    }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                log.d("No network status")
+            }
+        catch (IOException e)
+        {
+            
+        }
+
+        return location;
+    }
+
+
+    //obtain coordinates when called in
+    public double obtainLatitude()
+        {
+        if (location != null)
+            {
+                latitude = location.getLatitude();
+            }
+        return latitude;
+        }
+
+    public double obtainLongitude()
+        {
+            if (location != null)
+                {
+                    longitude = location.getLongitude();
+                }
+
+             return longitude;
+        }
 
     // Google maps added method for map load response
     @Override
