@@ -173,13 +173,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setAllGesturesEnabled(true);
 
-        // Add a marker in Sydney and move the camera
+        /*// Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        */
+
+        GPSTracker currentUserSession = new GPSTracker(getContext(), mMap);
+        LatLng userLocation = currentUserSession.getLocation();
+        MarkerOptions options = new MarkerOptions().position(userLocation);
+
+        // move camera to lat and long and set pin
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15.0f));
+        mMap.addMarker(options);
 
         initMapSearch();
+
+
+
     }
+
 }
+
 
 
