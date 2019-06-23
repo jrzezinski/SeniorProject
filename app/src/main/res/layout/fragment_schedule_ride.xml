@@ -48,7 +48,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_marginLeft="30dp"
-            android:layout_toRightOf="@+id/time_prompt" ></Spinner>
+            android:layout_toRightOf="@+id/time_prompt" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="20dp"
+            android:text="hrs"
+            android:layout_toRightOf="@+id/time_spinner"
+            android:layout_alignTop="@+id/time_spinner"/>
 
         <TextView
             android:id="@+id/pickup_time"
@@ -69,7 +78,9 @@
             android:layout_toRightOf="@+id/pickup_time"
             android:layout_marginTop="30dp"
             android:layout_below="@+id/time_spinner"
-            android:layout_alignStart="@+id/time_spinner"/>
+            android:layout_alignStart="@+id/time_spinner"
+            android:focusable="false"
+            android:enabled="true"/>
 
         <TextView
             android:id="@+id/cost_estimate"
@@ -85,7 +96,7 @@
             android:id="@+id/val_estimate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="350"
+            android:text="0"
             android:textSize="20dp"
             android:layout_toRightOf="@+id/cost_estimate"
             android:layout_marginTop="20dp"

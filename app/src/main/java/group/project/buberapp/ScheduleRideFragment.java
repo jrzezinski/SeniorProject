@@ -29,8 +29,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Calendar;
+
 public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback, AdapterView.OnItemSelectedListener
 {
+    // Declare Variables
     private GoogleMap mMap;
     private LatLng location;
     private ScheduleRideFragment.FragmentScheduleListener listener;
@@ -41,6 +44,10 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
     private String hour;
     private EditText pickupTime;
     private TimePickerDialog pickTime;
+    private int hourlyRate;
+    private Calendar calendar;
+    private int currentHour;
+    private int currentMinute;
 
     public interface FragmentScheduleListener
     {
@@ -56,7 +63,8 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
         launchPayButton = view.findViewById(R.id.pay_now_button);
         switchButton = view.findViewById(R.id.schedule_button);
         hourSelect = view.findViewById(R.id.time_spinner);
-        pickupTime = view.findViewById(R.id.pickup_time);
+        pickupTime = view.findViewById(R.id.pickup_val);
+        hourlyRate = 150;
 
         // Fill in the spinner with the String Array in strings.xml
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.timeBlocks, android.R.layout.simple_spinner_item);
@@ -70,12 +78,16 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
         pickupTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                calendar = Calendar.getInstance();
+                currentHour = calendar.get(Calendar.HOUR);
+                currentMinute = calendar.get(Calendar.MINUTE);
+
                 pickTime = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        pickupTime.setText(hourOfDay + ":" + minute);
+                        pickupTime.setText((hourOfDay < 12 ? hourOfDay : hourOfDay - 12) + ":" + (minute < 10 ? "0" + minute : minute) + " " + (hourOfDay < 12 ? "AM" : "PM"));
                     }
-                }, 0, 0, false);
+                }, currentHour, currentMinute, false);
 
                 pickTime.show();
             }
@@ -150,6 +162,8 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
     {
         hour = parent.getItemAtPosition(position).toString();
+        TextView cost = getActivity().findViewById(R.id.val_estimate);
+        cost.setText(Integer.toString(Integer.parseInt(hour) * hourlyRate));
     }
 
     @Override
