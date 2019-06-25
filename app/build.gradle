@@ -42,8 +42,17 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
 
     // Cloud Firestore
-    implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation 'com.google.firebase:firebase-firestore:19.0.2'
+
+    // Firebase SDKs
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+
+    // Other Firebase/Play services deps
+    implementation 'com.google.firebase:firebase-auth:17.0.0'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
+    // FirebaseUI (for authentication)
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.2'
 
     implementation 'com.android.support:multidex:1.0.3'
 }
