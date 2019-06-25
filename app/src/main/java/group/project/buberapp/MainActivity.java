@@ -15,6 +15,11 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.EditText;
+
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -35,8 +40,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private TextView capLogin;
     private TextView riderLogin;
     
+    private EditText Email;
+    private EditText Password;
+    private EditText Name;
+    private EditText Phone;
+    private EditText Boat;
+    private EditText BoatingID;
+    private EditText DLNumber;
+    
     //Cloud Firestore Instance 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference capRef = db.collection("captain");
+    private CollectionReference userRef = db.collection("users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -162,6 +177,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // Check app input, if good go to next page
     public void confirmInput(View v)
     {
+            String email = Email.getText().toString();
+            String password = Password.getText().toString();
+            String name = Name.getText().toString();
+            String phone = Phone.getText().toString();
+            String boatingid = BoatingID.getText().toString();
+            String dlnumber = DLNumber.getText().toString();
+        
         if(signupSwitch.isChecked() && captainSwitch.isChecked())
         {
             db.collection("captain");
