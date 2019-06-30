@@ -3,10 +3,12 @@
 package group.project.buberapp;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.util.Log;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,14 +19,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.EditText;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
+    private static final String TAG = "MainActivity";
+    private static final String KEY_EMAIL = "Email";
+    private static final String KEY_PASSWORD = "Password";
+    private static final String KEY_NAME = "Name";
+    private static final String KEY_PHONE = "Phone";
+    private static final String KEY_BOAT = "Boat";
+    private static final String KEY_DLNUMBER = "DL Number";
+    private static final String KEY_BOATINGID = "Boating ID";
+    
     // Fields from app
     private TextInputLayout textEmail;
     private TextInputLayout textPassword;
@@ -35,20 +53,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Spinner typeSelect;
     private Switch signupSwitch;
     private Switch captainSwitch;
+    
+    private EditText dataEmail;
+    private EditText dataPassword;
+    private EditText dataName;
+    private EditText dataPhone;
+    private EditText dataBoatID;
+    private EditText dataDLNumber;
 
     // Greeter fields from xml form
     private TextView capSignup;
     private TextView riderSignup;
     private TextView capLogin;
     private TextView riderLogin;
-    
-    private EditText Email;
-    private EditText Password;
-    private EditText Name;
-    private EditText Phone;
-    private EditText Boat;
-    private EditText BoatingID;
-    private EditText DLNumber;
     
     //Cloud Firestore Instance 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -71,6 +88,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         typeSelect = findViewById(R.id.type_spinner);
         signupSwitch = findViewById(R.id.signup_switch);
         captainSwitch = findViewById(R.id.captain_switch);
+        
+        dataEmail = findViewById(R.id.email);
+        dataPassword = findViewById(R.id.password);
+        dataName = findViewById(R.id.name);
+        dataPhone = findViewById(R.id.phone);
+        dataDLNumber = findViewById(R.id.driverId);
+        dataBoatID = findViewById(R.id.boatId);
 
         // Initialize greeter fields from xml form
         capSignup = findViewById(R.id.greet_captain_signup);
@@ -215,25 +239,63 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // Check app input, if good go to next page
     public void confirmInput(View v)
     {
-            String email = Email.getText().toString();
-            String password = Password.getText().toString();
-            String name = Name.getText().toString();
-            String phone = Phone.getText().toString();
-            String boatingid = BoatingID.getText().toString();
-            String dlnumber = DLNumber.getText().toString();
+            String emailIn = dataEmail.getText().toString();
+            String passIn = dataPassword.getText().toString();
+            String nameIn = dataName.getText().toString();
+            String phoneIn = dataPhone.getText().toString();
+            String driverIn = dataDLNumber.getText().toString();
+            String boatIn = dataBoatID.getText().toString();
+
+            Map<String,Object> myCap = new HashMap<String,Object>();
+            myCap.put(KEY_EMAIL, emailIn);
+            myCap.put(KEY_PASSWORD, passIn);
+            myCap.put(KEY_NAME, nameIn);
+            myCap.put(KEY_PHONE, phoneIn);
+            myCap.put(KEY_DLNUMBER, driverIn);
+            myCap.put(KEY_BOATINGID , boatIn);
+
+            Map<String,Object> myUser = new HashMap<String,Object>();
+            myUser.put(KEY_EMAIL, emailIn);
+            myUser.put(KEY_PASSWORD, passIn);
+            myUser.put(KEY_NAME, nameIn);
+            myUser.put(KEY_PHONE, phoneIn);
         
         if(signupSwitch.isChecked() && captainSwitch.isChecked())
         {
-            db.collection("captain");
-            
-                // Captain Signup field checks
-                if(!checkEmail() | !checkPass() | !checkName() | !checkPhone() | !checkDriver() | !checkBoatSafety())
-                {
-                    return;
+            capRef.add(myCap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Toast.makeText(MainActivity.this, "User Saved", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
                 }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, e.toString());
+                }
+            });
+            // Captain Signup field checks
+            if(!checkEmail() | !checkPass() | !checkName() | !checkPhone() | !checkDriver() | !checkBoatSafety())
+            {
+                return;
+            }
         }
         else if(signupSwitch.isChecked())
         {
+            userRef.add(myUser).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Toast.makeText(MainActivity.this, "User Saved", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, e.toString());
+                }
+            });
             // User Signup field check
             if(!checkEmail() | !checkPass() | !checkName() | !checkPhone())
             {
