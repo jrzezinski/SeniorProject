@@ -24,21 +24,18 @@ public class RideHistoryFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_ride_history, container, false);
         historyTitle = v.findViewById(R.id.historyTitle);
         historyDescription = v.findViewById(R.id.historyDescription);
-//        loadMore = v.findViewById(R.id.loadMore);
 
         // call to db for number of rides in history
         final int additionalHistory = 0;
 
-
-
-//        // load X additional rides when Load More button is clicked
+        // load X additional rides when Load More button is clicked
 //        loadMore.setOnClickListener(new View.OnClickListener()
 //        {
 //            @Override
 //            public void onClick(View v)
 //            {
 //                // if additional rides exist and are not showing, display X more
-//                if (additionalHistory < 0) {
+//                if (additionalHistory > 0) {
 //                    // check if offerer or rider???
 //                    // call to db for additional rides
 //                } else {

@@ -21,17 +21,8 @@ public class HelpFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_help, container, false);
-
-
         helpTitle = v.findViewById(R.id.helpTitle);
         helpItems = v.findViewById(R.id.helpItems);
-//        emailButton = v.findViewById(R.id.emailButton);
-
-//        helpTitle.setVisiblity(View.VISIBLE);
-//        helpItems.setVisiblity(View.VISIBLE);
-
-
-
 
         return v;
     }

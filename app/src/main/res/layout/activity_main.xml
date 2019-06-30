@@ -134,36 +134,6 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <!-- Driver's Liscence Field -->
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/text_input_driverId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:errorEnabled="true">
-
-            <android.support.design.widget.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Driver's Liscense Number"
-                android:inputType="text"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <!-- Boater Safety Field -->
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/text_input_boatId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:errorEnabled="true">
-
-            <android.support.design.widget.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Boater Safety Number"
-                android:inputType="number"/>
-
-        </android.support.design.widget.TextInputLayout>
-
         <!-- Watercraft selection dropdown -->
         <Spinner
             android:id="@+id/type_spinner"
