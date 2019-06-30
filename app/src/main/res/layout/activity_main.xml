@@ -1,146 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- By Justin Rzezinski -->
-<LinearLayout
+
+<!-- Enable Scrolling -->
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <!-- User designation Text -->
-    <TextView
-        android:id="@+id/greet_rider_login"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Rider Login"
-        android:textSize="30dp"
-        android:gravity="center"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp"
+        tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/greet_captain_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Captain Login"
-        android:textSize="30dp"
-        android:gravity="center"/>
-
-    <TextView
-        android:id="@+id/greet_rider_signup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Rider Signup"
-        android:textSize="30dp"
-        android:gravity="center"/>
-
-    <TextView
-        android:id="@+id/greet_captain_signup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Captain Signup"
-        android:textSize="30dp"
-        android:gravity="center"/>
-
-    <!-- Switch to enable Sign up options -->
-    <Switch
-        android:id="@+id/signup_switch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:layout_marginTop="15dp"
-        android:checked="false"/>
-
-    <!-- Switch to enable captain options -->
-    <Switch
-        android:id="@+id/captain_switch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Captain"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:checked="false"/>
-
-    <!-- Email Field -->
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/text_input_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:errorEnabled="true">
-
-        <android.support.design.widget.TextInputEditText
+        <!-- User designation Text -->
+        <TextView
+            android:id="@+id/greet_rider_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress"/>
+            android:text="Rider Login"
+            android:textSize="30dp"
+            android:gravity="center"/>
 
-    </android.support.design.widget.TextInputLayout>
-
-    <!--  Password Field -->
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/text_input_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:counterEnabled="true"
-        app:counterMaxLength="30"
-        app:passwordToggleEnabled="true"
-        app:errorEnabled="true">
-
-        <android.support.design.widget.TextInputEditText
+        <TextView
+            android:id="@+id/greet_captain_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword"/>
+            android:text="Captain Login"
+            android:textSize="30dp"
+            android:gravity="center"/>
 
-    </android.support.design.widget.TextInputLayout>
-
-    <!-- Name field -->
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/text_input_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:counterEnabled="true"
-        app:counterMaxLength="30"
-        app:errorEnabled="true">
-
-        <android.support.design.widget.TextInputEditText
+        <TextView
+            android:id="@+id/greet_rider_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
-            android:inputType="text"/>
+            android:text="Rider Signup"
+            android:textSize="30dp"
+            android:gravity="center"/>
 
-    </android.support.design.widget.TextInputLayout>
-
-    <!-- Phone Field -->
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/text_input_phone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:errorEnabled="true">
-
-        <android.support.design.widget.TextInputEditText
+        <TextView
+            android:id="@+id/greet_captain_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Phone"
-            android:inputType="number"/>
+            android:text="Captain Signup"
+            android:textSize="30dp"
+            android:gravity="center"/>
 
-    </android.support.design.widget.TextInputLayout>
+        <!-- Switch to enable Sign up options -->
+        <Switch
+            android:id="@+id/signup_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:layout_marginTop="15dp"
+            android:checked="false"/>
 
-    <!-- Watercraft selection dropdown -->
-    <Spinner
-        android:id="@+id/type_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"></Spinner>
+        <!-- Switch to enable captain options -->
+        <Switch
+            android:id="@+id/captain_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Captain"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:checked="false"/>
 
-    <!-- Sign in button -->
-    <Button
-        android:id="@+id/confirm_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Confirm"
-        android:layout_marginTop="50dp"
-        android:onClick="confirmInput"/>
+        <!-- Email Field -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/text_input_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true">
 
-</LinearLayout>
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <!--  Password Field -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/text_input_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="30"
+            app:passwordToggleEnabled="true"
+            app:errorEnabled="true">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Name field -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/text_input_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="30"
+            app:errorEnabled="true">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name"
+                android:inputType="text"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Phone Field -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/text_input_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone"
+                android:inputType="number"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Watercraft selection dropdown -->
+        <Spinner
+            android:id="@+id/type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"></Spinner>
+
+        <!-- Sign in button -->
+        <Button
+            android:id="@+id/confirm_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirm"
+            android:layout_marginTop="50dp"
+            android:onClick="confirmInput"/>
+
+    </LinearLayout>
+</ScrollView>

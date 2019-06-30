@@ -12,5 +12,20 @@
         <item>Catamaran</item>
         <item>Yacht</item>
     </string-array>
+    <string name="help_text">How do I become a captain?\\n-  Sign up today just like you would as a rider to begin offering your boat to seekers!\\n\\nWhere can I request a ride from?\\n-  Anywhere a captain will accept it! Captains are expected to know and comply with all local boating and maritime laws and regulations and will offer their service however they can with respect to them.\\n\\nDo I get a life vest?\\n-  All captains carry at least enough life vests for the maximum number of passengers they are able to book. \\n\\nWhat happens if the weather is inhospitable?\\n-  Unfortunately, we do not offer any refunds for rides requested through emBarco. Offerers also have to endure the unfortunate weather and will do their best to accomodate.</string>
+
+    <!-- Strings array for type_spinner -->
+    <string-array name="timeBlocks">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
 
 </resources>

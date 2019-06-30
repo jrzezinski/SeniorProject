@@ -3,6 +3,7 @@
     package="group.project.buberapp">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -17,6 +18,12 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA6jrlBfNiyH5-7RPHxmOLQxPpQIB3Rqa8" />
+
+        <!-- Payment page -->
+        <activity
+            android:name=".PaymentActivity"
+            android:theme="@style/AppTheme">
+        </activity>
 
         <!-- User home page -->
         <activity

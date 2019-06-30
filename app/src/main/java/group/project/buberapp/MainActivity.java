@@ -16,6 +16,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
     // Fields from app
@@ -162,8 +164,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     {
         if(signupSwitch.isChecked() && captainSwitch.isChecked())
         {
-            // Reference Captain Collection
-            CollectionReference captainCollectionRef = db.collection("captain");
+            db.collection("captain");
             
                 // Captain Signup field checks
                 if(!checkEmail() | !checkPass() | !checkName() | !checkPhone())

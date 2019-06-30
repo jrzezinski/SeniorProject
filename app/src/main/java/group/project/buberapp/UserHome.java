@@ -2,6 +2,7 @@
 
 package group.project.buberapp;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -39,6 +41,8 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
     private DrawerLayout drawer;
     private MapFragment mapFragment;
     ScheduleRideFragment scheduleRideFragment;
+    HelpFragment helpFragment;
+    RideHistoryFragment rideHistoryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,6 +56,8 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
         navigationView.setNavigationItemSelectedListener(this);
         mapFragment = new MapFragment();
         scheduleRideFragment = new ScheduleRideFragment();
+        helpFragment = new HelpFragment();
+        rideHistoryFragment = new RideHistoryFragment();
 
         // Set the toolbar Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);

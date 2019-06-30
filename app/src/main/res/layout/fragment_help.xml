@@ -1,41 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:id="@+id/RelativeLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="379dp"
-        android:layout_height="82dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="496dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="30sp"
-        tools:text="Help & Frequently Asked Questions" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="480dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginBottom="0dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:lines="25"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:verticalScrollbarPosition="right"
-        tools:text="How do I become a captain?\n-  Sign up today just like you would as a rider to begin offering your boat to seekers!\n\nWhere can I request a ride from?\n-  Anywhere a captain will accept it! Captains are expected to know and comply with all local boating and maritime laws and regulations and will offer their service however they can with respect to them.\n\nDo I get a life vest?\n-  All captains carry at least enough life vests for the maximum number of passengers they are able to book. \n\nWhat happens if the weather is inhospitable?\n-  Unfortunately, we do not offer any refunds for rides requested through emBarco. Offerers also have to endure the unfortunate weather and will do their best to accomodate." />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/helpTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="40sp"
+                android:paddingTop="115sp"
+                android:paddingEnd="40sp"
+                android:text="Help and Frequently Asked Questions"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="30sp"
+                tools:layout_conversion_wrapHeight="348"
+                tools:layout_conversion_wrapWidth="1080"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/helpItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="65sp"
+                android:layout_marginBottom="65sp"
+                android:isScrollContainer="true"
+                android:overScrollMode="ifContentScrolls"
+                android:paddingStart="35sp"
+                android:paddingTop="20sp"
+                android:paddingEnd="35sp"
+                android:scrollbarStyle="outsideInset"
+                android:scrollbars="vertical"
+                android:text="How do I become a captain?\n\n Sign up today just like you would as a rider to begin offering your boat to seekers!\n\n\nWhere can I request a ride from?\n\n Anywhere a captain will accept it! Captains are expected to know and comply with all local boating and maritime laws and regulations and will offer their service however they can with respect to them.\n\n\nDo I get a life vest?\n\n All captains carry at least enough life vests for the maximum number of passengers they are able to book. \n\n\nWhat happens if the weather is inhospitable?\n\n Unfortunately, we do not offer any refunds for rides requested through emBarco. Offerers also have to endure the unfortunate weather and will do their best to accomodate.\n\n\n\n\n\n\nQuestion not answered here? Reach out to us at emBarcoApp@gmail.com!"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="18sp"
+                android:verticalScrollbarPosition="defaultPosition"
+                tools:layout_conversion_wrapHeight="1928"
+                tools:layout_conversion_wrapWidth="1080" />
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
