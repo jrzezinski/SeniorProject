@@ -15,6 +15,11 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.EditText;
+
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -25,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private TextInputLayout textPassword;
     private TextInputLayout textName;
     private TextInputLayout textPhone;
+    private TextInputLayout textDriverId;
+    private TextInputLayout textBoatId;
     private Spinner typeSelect;
     private Switch signupSwitch;
     private Switch captainSwitch;
@@ -35,8 +42,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private TextView capLogin;
     private TextView riderLogin;
     
+    private EditText Email;
+    private EditText Password;
+    private EditText Name;
+    private EditText Phone;
+    private EditText Boat;
+    private EditText BoatingID;
+    private EditText DLNumber;
+    
     //Cloud Firestore Instance 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference capRef = db.collection("captain");
+    private CollectionReference userRef = db.collection("users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         textPassword = findViewById(R.id.text_input_password);
         textName = findViewById(R.id.text_input_name);
         textPhone = findViewById(R.id.text_input_phone);
+        textDriverId = findViewById(R.id.text_input_driverId);
+        textBoatId = findViewById(R.id.text_input_boatId);
         typeSelect = findViewById(R.id.type_spinner);
         signupSwitch = findViewById(R.id.signup_switch);
         captainSwitch = findViewById(R.id.captain_switch);
@@ -72,6 +91,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         textName.setVisibility(View.GONE);
         textPhone.setVisibility(View.GONE);
         typeSelect.setVisibility(View.GONE);
+        textBoatId.setVisibility(View.GONE);
+        textDriverId.setVisibility(View.GONE);
 
         // Listen for Switch changes
         signupSwitch.setOnCheckedChangeListener(this);
@@ -159,15 +180,54 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    private boolean checkDriver()
+    {
+        String driverIn = textDriverId.getEditText().getText().toString().trim();
+
+        if (driverIn.isEmpty())
+        {
+            textDriverId.setError("Please use a valid Liscence Number.");
+            return false;
+        }
+        else
+        {
+            textDriverId.setError(null);
+            return true;
+        }
+    }
+
+    private boolean checkBoatSafety()
+    {
+        String boatIn = textBoatId.getEditText().getText().toString().trim();
+
+        if (boatIn.isEmpty())
+        {
+            textBoatId.setError("Please use a valid email.");
+            return false;
+        }
+        else
+        {
+            textBoatId.setError(null);
+            return true;
+        }
+    }
+
     // Check app input, if good go to next page
     public void confirmInput(View v)
     {
+            String email = Email.getText().toString();
+            String password = Password.getText().toString();
+            String name = Name.getText().toString();
+            String phone = Phone.getText().toString();
+            String boatingid = BoatingID.getText().toString();
+            String dlnumber = DLNumber.getText().toString();
+        
         if(signupSwitch.isChecked() && captainSwitch.isChecked())
         {
             db.collection("captain");
             
                 // Captain Signup field checks
-                if(!checkEmail() | !checkPass() | !checkName() | !checkPhone())
+                if(!checkEmail() | !checkPass() | !checkName() | !checkPhone() | !checkDriver() | !checkBoatSafety())
                 {
                     return;
                 }
@@ -225,6 +285,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             textName.setVisibility(View.VISIBLE);
             textPhone.setVisibility(View.VISIBLE);
             typeSelect.setVisibility(View.VISIBLE);
+            textBoatId.setVisibility(View.VISIBLE);
+            textDriverId.setVisibility(View.VISIBLE);
 
             // show appropriate greeting
             capSignup.setVisibility(View.VISIBLE);
@@ -238,6 +300,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             textName.setVisibility(View.VISIBLE);
             textPhone.setVisibility(View.VISIBLE);
             typeSelect.setVisibility(View.GONE);
+            textBoatId.setVisibility(View.GONE);
+            textDriverId.setVisibility(View.GONE);
 
             // show appropriate greeting
             capSignup.setVisibility(View.GONE);
@@ -251,6 +315,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             textName.setVisibility(View.GONE);
             textPhone.setVisibility(View.GONE);
             typeSelect.setVisibility(View.GONE);
+            textBoatId.setVisibility(View.GONE);
+            textDriverId.setVisibility(View.GONE);
 
             // show appropriate greeting
             capSignup.setVisibility(View.GONE);
@@ -264,6 +330,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             textName.setVisibility(View.GONE);
             textPhone.setVisibility(View.GONE);
             typeSelect.setVisibility(View.GONE);
+            textBoatId.setVisibility(View.GONE);
+            textDriverId.setVisibility(View.GONE);
 
             // show appropriate greeting
             capSignup.setVisibility(View.GONE);
