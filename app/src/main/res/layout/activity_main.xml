@@ -79,6 +79,7 @@
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/email"
                 android:hint="Email"
                 android:inputType="textEmailAddress"/>
 
@@ -97,6 +98,7 @@
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/password"                                             
                 android:hint="Password"
                 android:inputType="textPassword"/>
 
@@ -114,6 +116,7 @@
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/name"                                             
                 android:hint="Name"
                 android:inputType="text"/>
 
@@ -129,6 +132,7 @@
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/phone"
                 android:hint="Phone"
                 android:inputType="number"/>
 
@@ -144,6 +148,7 @@
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/driverId"
                 android:hint="Driver's Liscense Number"
                 android:inputType="text"/>
 
@@ -159,6 +164,7 @@
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/boatId"
                 android:hint="Boater Safety Number"
                 android:inputType="number"/>
 
