@@ -31,6 +31,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
@@ -262,6 +264,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         
         if(signupSwitch.isChecked() && captainSwitch.isChecked())
         {
+            // Captain Signup field checks
+            if(!checkEmail() | !checkPass() | !checkName() | !checkPhone() | !checkDriver() | !checkBoatSafety())
+            {
+                return;
+            }
+
+            // add captain to DB
             capRef.add(myCap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
@@ -275,14 +284,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     Log.d(TAG, e.toString());
                 }
             });
-            // Captain Signup field checks
-            if(!checkEmail() | !checkPass() | !checkName() | !checkPhone() | !checkDriver() | !checkBoatSafety())
-            {
-                return;
-            }
         }
         else if(signupSwitch.isChecked())
         {
+            // User Signup field check
+            if(!checkEmail() | !checkPass() | !checkName() | !checkPhone())
+            {
+                return;
+            }
+
+            // add user to DB
             userRef.add(myUser).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
@@ -296,11 +307,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     Log.d(TAG, e.toString());
                 }
             });
-            // User Signup field check
-            if(!checkEmail() | !checkPass() | !checkName() | !checkPhone())
-            {
-                return;
-            }
         }
         else if(captainSwitch.isChecked())
         {
@@ -317,6 +323,37 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             {
                 return;
             }
+
+            // Use this block to check if field exists
+            final String currentEmail = textEmail.getEditText().getText().toString().trim();
+            Query query = userRef.whereEqualTo("Email", currentEmail);
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task)
+                {
+                    if(task.isSuccessful())
+                    {
+                        for(DocumentSnapshot snap : task.getResult())
+                        {
+                            String email = snap.getString("Email");
+
+                            if(email.equals(currentEmail) /* && check the pass here instead of comment*/)
+                            {
+                                Toast.makeText(MainActivity.this, "YES", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    if(task.getResult().size() == 0)
+                    {
+                        Toast.makeText(MainActivity.this, "NO", Toast.LENGTH_SHORT).show();
+
+                        // should exit method and not change fragments. It doesn't needs to be looked at.
+                        return;
+                    }
+                }
+            });
         }
 
         // Open second page/activity (UserHome)
