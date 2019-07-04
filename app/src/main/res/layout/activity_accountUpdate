@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp"
+        tools:context=".MainActivity">
+
+        <TextView
+            android:id="@+id/textview_accountInfoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="113dp"
+            android:layout_marginRight="10dp"
+            android:hint="Account Information"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="35dp" />
+
+        <TextView
+            android:id="@+id/textview_userPhoto"
+            android:layout_width="80dp"
+            android:layout_height="73dp"
+            android:layout_marginRight="10dp"
+            android:hint="user photo?"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:textSize="15dp" />
+
+        <LinearLayout
+            android:layout_width="387dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textview_firstNameTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:hint="First Name"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textview_updateFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginRight="10dp"
+                android:hint="display user name"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/textview_lastNameTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Last Name"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textview_updateLastName"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginRight="10dp"
+                android:hint="display user last name"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="15dp" />
+
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="68dp" />
+
+            <TextView
+                android:id="@+id/textview_phoneNumberTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:hint="Phone Number"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textview_updatePhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginRight="10dp"
+                android:hint="display phone number"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/textview_emailTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:hint="Email"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textview_updatePhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginRight="10dp"
+                android:hint="display email"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/textview_passwordTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:hint="Password"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textview_passwordTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:hint="display password hidden"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="15dp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
