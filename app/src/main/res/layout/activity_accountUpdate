@@ -17,27 +17,33 @@
         <TextView
             android:id="@+id/textview_accountInfoTitle"
             android:layout_width="wrap_content"
-            android:layout_height="113dp"
+            android:layout_height="83dp"
             android:layout_marginRight="10dp"
             android:hint="Account Information"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="35dp" />
 
-        <TextView
-            android:id="@+id/textview_userPhoto"
-            android:layout_width="80dp"
-            android:layout_height="73dp"
-            android:layout_marginRight="10dp"
-            android:hint="user photo?"
-            android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:textSize="15dp" />
+        <ImageView
+            android:id="@+id/image_DisplayUserPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnRotateImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next Image" />
+
 
         <LinearLayout
             android:layout_width="387dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="56dp" />
             <TextView
                 android:id="@+id/textview_firstNameTitle"
                 android:layout_width="wrap_content"
@@ -98,10 +104,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="37dp"
                 android:layout_marginRight="10dp"
-                android:hint="display phone number"
+                android:hint="display phone"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="15dp" />
+                android:textSize="15dp"
+                android:ems="10"
+                android:inputType="phone"
+                />
+
 
             <TextView
                 android:id="@+id/textview_emailTitle"
@@ -114,7 +124,7 @@
                 android:textSize="20dp" />
 
             <EditText
-                android:id="@+id/textview_updatePhoneNumber"
+                android:id="@+id/textview_updateEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="37dp"
                 android:layout_marginRight="10dp"
@@ -134,18 +144,20 @@
                 android:textSize="20dp" />
 
             <EditText
-                android:id="@+id/textview_passwordTitle"
+                android:id="@+id/textview_updatePassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
+                android:ems="10"
                 android:hint="display password hidden"
+                android:inputType="textPassword"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="15dp"
-                android:ems="10"
-                android:inputType="textPassword"
-                />
+                android:textSize="15dp" />
+
+
         </LinearLayout>
+
 
     </LinearLayout>
 </ScrollView>
