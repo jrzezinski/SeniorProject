@@ -48,12 +48,12 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20dp" />
 
-            <TextView
+            <EditText
                 android:id="@+id/textview_updateFirstName"
                 android:layout_width="wrap_content"
                 android:layout_height="37dp"
                 android:layout_marginRight="10dp"
-                android:hint="display user name"
+                android:hint="display user  first name"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="15dp" />
@@ -68,7 +68,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20dp" />
 
-            <TextView
+            <EditText
                 android:id="@+id/textview_updateLastName"
                 android:layout_width="wrap_content"
                 android:layout_height="37dp"
@@ -93,7 +93,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20dp" />
 
-            <TextView
+            <EditText
                 android:id="@+id/textview_updatePhoneNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="37dp"
@@ -113,7 +113,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20dp" />
 
-            <TextView
+            <EditText
                 android:id="@+id/textview_updatePhoneNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="37dp"
@@ -133,7 +133,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20dp" />
 
-            <TextView
+            <EditText
                 android:id="@+id/textview_passwordTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -141,9 +141,10 @@
                 android:hint="display password hidden"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="15dp" />
-
-
+                android:textSize="15dp"
+                android:ems="10"
+                android:inputType="textPassword"
+                />
         </LinearLayout>
 
     </LinearLayout>
