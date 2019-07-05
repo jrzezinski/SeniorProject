@@ -318,6 +318,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             // Use this block to check if field exists
             final String currentEmail = textEmail.getEditText().getText().toString().trim();
+            final String currentPass = textPassword.getEditText().getText().toString().trim();
             Query query = capRef.whereEqualTo("Email", currentEmail);
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
             {
@@ -329,13 +330,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         for(DocumentSnapshot snap : task.getResult())
                         {
                             String email = snap.getString("Email");
+                            String pass = snap.getString("Password");
+                            String name = snap.getString("Name");
+                            String phone = snap.getString("Phone");
+                            String userId = snap.getId();
 
-                            if(email.equals(currentEmail) /* && check the pass here instead of comment*/)
+                            if(email.equals(currentEmail) /*&& pass.equals(currentPass)*/)
                             {
                                 Toast.makeText(MainActivity.this, "YES", Toast.LENGTH_SHORT).show();
 
                                 // Open second page/activity (UserHome)
                                 Intent intent = new Intent(MainActivity.this, UserHome.class);
+                                intent.putExtra("EXTRA_Final_email", email);
+                                intent.putExtra("EXTRA_Final_pass", pass);
+                                intent.putExtra("EXTRA_Final_name", name);
+                                intent.putExtra("EXTRA_Final_phone", phone);
+                                intent.putExtra("EXTRA_Final_userType", "captain");
+                                intent.putExtra("EXTRA_Final_userId", userId);
                                 startActivity(intent);
                             }
                         }
@@ -369,6 +380,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         for(DocumentSnapshot snap : task.getResult())
                         {
                             String email = snap.getString("Email");
+                            String pass = snap.getString("Password");
+                            String name = snap.getString("Name");
+                            String phone = snap.getString("Phone");
+                            String userId = snap.getId();
 
                             if(email.equals(currentEmail) /* && check the pass here instead of comment*/)
                             {
@@ -376,6 +391,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                                 // Open second page/activity (UserHome)
                                 Intent intent = new Intent(MainActivity.this, UserHome.class);
+                                intent.putExtra("EXTRA_Final_email", email);
+                                intent.putExtra("EXTRA_Final_pass", pass);
+                                intent.putExtra("EXTRA_Final_name", name);
+                                intent.putExtra("EXTRA_Final_phone", phone);
+                                intent.putExtra("EXTRA_Final_userType", "user");
+                                intent.putExtra("EXTRA_Final_userId", userId);
                                 startActivity(intent);
                             }
                         }
