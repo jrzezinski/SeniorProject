@@ -315,6 +315,38 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             {
                 return;
             }
+
+            // Use this block to check if field exists
+            final String currentEmail = textEmail.getEditText().getText().toString().trim();
+            Query query = capRef.whereEqualTo("Email", currentEmail);
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task)
+                {
+                    if(task.isSuccessful())
+                    {
+                        for(DocumentSnapshot snap : task.getResult())
+                        {
+                            String email = snap.getString("Email");
+
+                            if(email.equals(currentEmail) /* && check the pass here instead of comment*/)
+                            {
+                                Toast.makeText(MainActivity.this, "YES", Toast.LENGTH_SHORT).show();
+
+                                // Open second page/activity (UserHome)
+                                Intent intent = new Intent(MainActivity.this, UserHome.class);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+
+                    if(task.getResult().size() == 0)
+                    {
+                        Toast.makeText(MainActivity.this, "NO", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
         else
         {
@@ -341,6 +373,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             if(email.equals(currentEmail) /* && check the pass here instead of comment*/)
                             {
                                 Toast.makeText(MainActivity.this, "YES", Toast.LENGTH_SHORT).show();
+
+                                // Open second page/activity (UserHome)
+                                Intent intent = new Intent(MainActivity.this, UserHome.class);
+                                startActivity(intent);
                             }
                         }
                     }
@@ -348,17 +384,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     if(task.getResult().size() == 0)
                     {
                         Toast.makeText(MainActivity.this, "NO", Toast.LENGTH_SHORT).show();
-
-                        // should exit method and not change fragments. It doesn't needs to be looked at.
-                        return;
                     }
                 }
             });
         }
-
-        // Open second page/activity (UserHome)
-        Intent intent = new Intent(this, UserHome.class);
-        startActivity(intent);
     }
 
     // Methods for spinner

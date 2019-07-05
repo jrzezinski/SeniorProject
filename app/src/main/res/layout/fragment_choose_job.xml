@@ -1,40 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".JobSelectFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Rides ready to set sail!"
-        android:textSize="30dp"
-        android:gravity="center_horizontal"
-        android:id="@+id/title_set_sail"
-        android:layout_marginTop="10dp"/>
-
-    <ScrollView
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/title_set_sail"
+        android:layout_height="0dp"
+        android:layout_weight="15">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rides ready to set sail!"
+            android:textSize="30dp"
+            android:gravity="center"
+            android:layout_marginTop="55dp"/>
+    </RelativeLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
         android:layout_below="@+id/title_set_sail"
         android:gravity="center_horizontal"
         android:id="@+id/job_list"
-        android:minHeight="450dp"
-        android:layout_marginTop="20dp">
+        android:layout_height="0dp"
+        android:layout_weight="70">
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ListView>
+            android:layout_height="match_parent"
+            android:id="@+id/jobs_recycler_view">
+        </android.support.v7.widget.RecyclerView>
 
-    </ScrollView>
+    </android.support.design.widget.CoordinatorLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/job_list"
-        android:text="Confirm selection"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="15">
 
-</RelativeLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm selection"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+</LinearLayout>
