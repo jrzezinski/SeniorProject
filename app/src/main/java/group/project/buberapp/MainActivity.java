@@ -262,6 +262,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         
         if(signupSwitch.isChecked() && captainSwitch.isChecked())
         {
+            // Captain Signup field checks
+            if(!checkEmail() | !checkPass() | !checkName() | !checkPhone() | !checkDriver() | !checkBoatSafety())
+            {
+                return;
+            }
+            
             capRef.add(myCap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
@@ -275,14 +281,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     Log.d(TAG, e.toString());
                 }
             });
-            // Captain Signup field checks
-            if(!checkEmail() | !checkPass() | !checkName() | !checkPhone() | !checkDriver() | !checkBoatSafety())
-            {
-                return;
-            }
         }
         else if(signupSwitch.isChecked())
         {
+            // User Signup field check
+            if(!checkEmail() | !checkPass() | !checkName() | !checkPhone())
+            {
+                return;
+            }
+            
             userRef.add(myUser).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
@@ -296,11 +303,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     Log.d(TAG, e.toString());
                 }
             });
-            // User Signup field check
-            if(!checkEmail() | !checkPass() | !checkName() | !checkPhone())
-            {
-                return;
-            }
         }
         else if(captainSwitch.isChecked())
         {
