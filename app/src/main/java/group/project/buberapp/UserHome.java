@@ -44,6 +44,13 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
     HelpFragment helpFragment;
     RideHistoryFragment rideHistoryFragment;
 
+    public String userEmail;
+    public String userPass;
+    public String userName;
+    public String userPhone;
+    public String userType;
+    public String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -58,6 +65,12 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
         scheduleRideFragment = new ScheduleRideFragment();
         helpFragment = new HelpFragment();
         rideHistoryFragment = new RideHistoryFragment();
+        userEmail = getIntent().getStringExtra("EXTRA_Final_email");
+        userPass = getIntent().getStringExtra("EXTRA_Final_pass");
+        userName = getIntent().getStringExtra("EXTRA_Final_name");
+        userPhone = getIntent().getStringExtra("EXTRA_Final_phone");
+        userType = getIntent().getStringExtra("EXTRA_Final_userType");
+        userId = getIntent().getStringExtra("EXTRA_Final_userId");
 
         // Set the toolbar Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -131,7 +144,14 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit();
                 break;
             case R.id.schdule_ride:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new JobSelectFragment()).commit(); // Base correct fragment on logged in user ScheduleRideFragment()
+                if (userType.equals("captain"))
+                {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new JobSelectFragment()).commit();
+                }
+                else
+                {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ScheduleRideFragment()).commit();
+                }
                 break;
             case R.id.ride_history:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RideHistoryFragment()).commit();
