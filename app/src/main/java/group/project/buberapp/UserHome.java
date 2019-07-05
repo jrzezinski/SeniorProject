@@ -131,7 +131,7 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit();
                 break;
             case R.id.schdule_ride:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new JobSelectFragment()).commit(); /////////
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new JobSelectFragment()).commit(); // Base correct fragment on logged in user ScheduleRideFragment()
                 break;
             case R.id.ride_history:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RideHistoryFragment()).commit();

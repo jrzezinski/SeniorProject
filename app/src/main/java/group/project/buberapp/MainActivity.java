@@ -318,6 +318,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             // Use this block to check if field exists
             final String currentEmail = textEmail.getEditText().getText().toString().trim();
+            final String currentPass = textPassword.getEditText().getText().toString().trim();
             Query query = capRef.whereEqualTo("Email", currentEmail);
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
             {
@@ -329,8 +330,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         for(DocumentSnapshot snap : task.getResult())
                         {
                             String email = snap.getString("Email");
+                            String pass = snap.getString("Password");
 
-                            if(email.equals(currentEmail) /* && check the pass here instead of comment*/)
+                            if(email.equals(currentEmail) & pass.equals(currentPass))
                             {
                                 Toast.makeText(MainActivity.this, "YES", Toast.LENGTH_SHORT).show();
 
