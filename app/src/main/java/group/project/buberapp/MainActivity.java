@@ -31,6 +31,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
@@ -267,7 +269,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             {
                 return;
             }
-            
+
+            // add captain to DB
             capRef.add(myCap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
@@ -289,7 +292,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             {
                 return;
             }
-            
+
+            // add user to DB
             userRef.add(myUser).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
@@ -311,6 +315,38 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             {
                 return;
             }
+
+            // Use this block to check if field exists
+            final String currentEmail = textEmail.getEditText().getText().toString().trim();
+            Query query = capRef.whereEqualTo("Email", currentEmail);
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task)
+                {
+                    if(task.isSuccessful())
+                    {
+                        for(DocumentSnapshot snap : task.getResult())
+                        {
+                            String email = snap.getString("Email");
+
+                            if(email.equals(currentEmail) /* && check the pass here instead of comment*/)
+                            {
+                                Toast.makeText(MainActivity.this, "YES", Toast.LENGTH_SHORT).show();
+
+                                // Open second page/activity (UserHome)
+                                Intent intent = new Intent(MainActivity.this, UserHome.class);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+
+                    if(task.getResult().size() == 0)
+                    {
+                        Toast.makeText(MainActivity.this, "NO", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
         else
         {
@@ -319,11 +355,39 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             {
                 return;
             }
-        }
 
-        // Open second page/activity (UserHome)
-        Intent intent = new Intent(this, UserHome.class);
-        startActivity(intent);
+            // Use this block to check if field exists
+            final String currentEmail = textEmail.getEditText().getText().toString().trim();
+            Query query = userRef.whereEqualTo("Email", currentEmail);
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task)
+                {
+                    if(task.isSuccessful())
+                    {
+                        for(DocumentSnapshot snap : task.getResult())
+                        {
+                            String email = snap.getString("Email");
+
+                            if(email.equals(currentEmail) /* && check the pass here instead of comment*/)
+                            {
+                                Toast.makeText(MainActivity.this, "YES", Toast.LENGTH_SHORT).show();
+
+                                // Open second page/activity (UserHome)
+                                Intent intent = new Intent(MainActivity.this, UserHome.class);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+
+                    if(task.getResult().size() == 0)
+                    {
+                        Toast.makeText(MainActivity.this, "NO", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 
     // Methods for spinner

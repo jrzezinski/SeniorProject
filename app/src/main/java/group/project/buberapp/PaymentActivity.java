@@ -41,8 +41,8 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
     private static final int REQUEST_CODE = 1234;
 
     // Server information
-    final String API_GET_TOKEN = "http://10.0.2.2:81/braintree/main.php";
-    final String API_CHECK_OUT = "http://10.0.2.2:81/braintree/checkout.php";
+    final String API_GET_TOKEN = "http://18.211.178.129:80/braintree/main.php";
+    final String API_CHECK_OUT = "http://18.211.178.129:80/braintree/checkout.php";
 
     // Declare variables
     String token,amount;
