@@ -2,6 +2,7 @@
 
 package group.project.buberapp;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -44,12 +46,12 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
     HelpFragment helpFragment;
     RideHistoryFragment rideHistoryFragment;
 
-    public String userEmail;
-    public String userPass;
-    public String userName;
-    public String userPhone;
-    public String userType;
-    public String userId;
+    public static String userEmail;
+    public static String userPass;
+    public static String userName;
+    public static String userPhone;
+    public static String userType;
+    public static String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -119,6 +121,23 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
 
         return null;
     }
+
+    /*
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        super.onCreateOptionsMenu(menu);
+
+        // set navigation option depending on user type
+        if (userType.equals("captain"))
+        {
+            MenuItem changeThisItem = menu.findItem(R.id.schdule_ride);
+            changeThisItem.setTitle("Select a Job");
+        }
+
+        return true;
+    }
+    */
 
     // send lat and long data and open schedule a ride fragment
     @Override
