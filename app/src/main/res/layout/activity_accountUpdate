@@ -2,7 +2,6 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -44,46 +43,26 @@
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="56dp" />
+
             <TextView
-                android:id="@+id/textview_firstNameTitle"
+                android:id="@+id/displayName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:hint="First Name"
+                android:hint="Name"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="20dp" />
 
             <EditText
-                android:id="@+id/textview_updateFirstName"
+                android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="37dp"
                 android:layout_marginRight="10dp"
-                android:hint="display user  first name"
+                android:hint="display user name"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="15dp" />
-
-            <TextView
-                android:id="@+id/textview_lastNameTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Last Name"
-                android:paddingTop="@dimen/nav_header_vertical_spacing"
-                android:textAllCaps="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="20dp" />
-
-            <EditText
-                android:id="@+id/textview_updateLastName"
-                android:layout_width="wrap_content"
-                android:layout_height="37dp"
-                android:layout_marginRight="10dp"
-                android:hint="display user last name"
-                android:paddingTop="@dimen/nav_header_vertical_spacing"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="15dp" />
-
 
             <Space
                 android:layout_width="match_parent"
@@ -100,17 +79,56 @@
                 android:textSize="20dp" />
 
             <EditText
-                android:id="@+id/textview_updatePhoneNumber"
+                android:id="@+id/phone"
                 android:layout_width="wrap_content"
                 android:layout_height="37dp"
                 android:layout_marginRight="10dp"
+                android:ems="10"
                 android:hint="display phone"
+                android:inputType="phone"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="15dp"
-                android:ems="10"
-                android:inputType="phone"
-                />
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/textView_DriverID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:hint="Driver ID"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/driverID"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginRight="10dp"
+                android:hint="display driverID"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/textView_boatID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:hint="Boat ID"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/boatID"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginRight="10dp"
+                android:hint="display driverID"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="15dp" />
 
 
             <TextView
@@ -124,7 +142,7 @@
                 android:textSize="20dp" />
 
             <EditText
-                android:id="@+id/textview_updateEmail"
+                android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="37dp"
                 android:layout_marginRight="10dp"
@@ -144,7 +162,7 @@
                 android:textSize="20dp" />
 
             <EditText
-                android:id="@+id/textview_updatePassword"
+                android:id="@+id/password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
@@ -154,7 +172,6 @@
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="15dp" />
-
 
         </LinearLayout>
 
