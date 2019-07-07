@@ -9,7 +9,7 @@
         android:id="@+id/menu_side">
         <item
             android:id="@+id/account_info"
-            android:icon="@drawable/ic_help"
+            android:icon="@drawable/ic_account"
             android:title="User" />
         <item
             android:id="@+id/map_view"
@@ -18,7 +18,8 @@
         <item
             android:id="@+id/schdule_ride"
             android:icon="@drawable/ic_boatride"
-            android:title="Schedule Ride" />
+            android:title="Select Ride"
+            android:visible="false"/>
         <item
             android:id="@+id/ride_history"
             android:icon="@drawable/ic_ride_history"
