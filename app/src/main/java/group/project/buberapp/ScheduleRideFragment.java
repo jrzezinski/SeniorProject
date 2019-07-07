@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +29,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback, AdapterView.OnItemSelectedListener
 {
@@ -48,6 +56,10 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
     private Calendar calendar;
     private int currentHour;
     private int currentMinute;
+
+    // Database stuff
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference jobList = db.collection("Rides");
 
     public interface FragmentScheduleListener
     {
@@ -107,7 +119,32 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
                 switchButton.setVisibility(View.GONE);
                 launchPayButton.setVisibility(View.VISIBLE);
 
-                Toast.makeText(getContext(), "Ride Scheduled! Please wait for a pickup.", Toast.LENGTH_SHORT).show();
+                // get user info
+                int payout = Integer.parseInt(finalCost.getText().toString());
+                String pickup = pickupTime.getText().toString();
+                int hoursChosen = Integer.parseInt(hourSelect.getSelectedItem().toString());
+
+                // Store user info
+                Map<String,Object> myRide = new HashMap<String,Object>();
+                myRide.put("payout", payout);
+                myRide.put("pickupTime", pickup);
+                myRide.put("rideTime", hoursChosen);
+                myRide.put("RideEndLoc", location);
+                myRide.put("SeekerID", UserHome.userId);
+                myRide.put("OffererID", null);
+
+                // Send info to Database
+                jobList.add(myRide).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(getContext(), "Ride Scheduled! Please wait for a pickup.", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), "Ride scheduling failed, try again.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
