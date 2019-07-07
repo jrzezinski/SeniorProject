@@ -339,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                             if(email.equals(currentEmail) /*&& pass.equals(currentPass)*/)
                             {
-                                Toast.makeText(MainActivity.this, "YES", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Welcome!", Toast.LENGTH_SHORT).show();
 
                                 // Open second page/activity (UserHome)
                                 Intent intent = new Intent(MainActivity.this, UserHome.class);
@@ -358,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                     if(task.getResult().size() == 0)
                     {
-                        Toast.makeText(MainActivity.this, "NO", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Captain not found! Please sign up!", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -391,7 +391,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                             if(email.equals(currentEmail) /* && check the pass here instead of comment*/)
                             {
-                                Toast.makeText(MainActivity.this, "YES", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Welcome!", Toast.LENGTH_SHORT).show();
 
                                 // Open second page/activity (UserHome)
                                 Intent intent = new Intent(MainActivity.this, UserHome.class);
@@ -408,7 +408,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                     if(task.getResult().size() == 0)
                     {
-                        Toast.makeText(MainActivity.this, "NO", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Rider not found! Please sign up!", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
