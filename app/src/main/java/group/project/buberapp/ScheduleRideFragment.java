@@ -2,6 +2,7 @@
 
 package group.project.buberapp;
 
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +12,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,14 +29,25 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
+import java.util.Calendar;
+
+public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback, AdapterView.OnItemSelectedListener
 {
+    // Declare Variables
     private GoogleMap mMap;
     private LatLng location;
     private ScheduleRideFragment.FragmentScheduleListener listener;
     private Button launchPayButton;
     private Button switchButton;
     private TextView finalCost;
+    private Spinner hourSelect;
+    private String hour;
+    private EditText pickupTime;
+    private TimePickerDialog pickTime;
+    private int hourlyRate;
+    private Calendar calendar;
+    private int currentHour;
+    private int currentMinute;
 
     public interface FragmentScheduleListener
     {
@@ -44,6 +62,36 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
         final View view = inflater.inflate(R.layout.fragment_schedule_ride, container, false);
         launchPayButton = view.findViewById(R.id.pay_now_button);
         switchButton = view.findViewById(R.id.schedule_button);
+        hourSelect = view.findViewById(R.id.time_spinner);
+        pickupTime = view.findViewById(R.id.pickup_val);
+        hourlyRate = 150;
+
+        // Fill in the spinner with the String Array in strings.xml
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.timeBlocks, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        hourSelect.setAdapter(adapter);
+
+        // Set spinner to listen for change
+        hourSelect.setOnItemSelectedListener(this);
+
+        // Pickup time user prompt onclick
+        pickupTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendar = Calendar.getInstance();
+                currentHour = calendar.get(Calendar.HOUR);
+                currentMinute = calendar.get(Calendar.MINUTE);
+
+                pickTime = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        pickupTime.setText((hourOfDay < 12 ? hourOfDay : hourOfDay - 12) + ":" + (minute < 10 ? "0" + minute : minute) + " " + (hourOfDay < 12 ? "AM" : "PM"));
+                    }
+                }, currentHour, currentMinute, false);
+
+                pickTime.show();
+            }
+        });
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map_schedule);
@@ -80,7 +128,7 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
     // update search on checkout of fragment_schedule_ride
     public void updateSearchText(LatLng locationText)
     {
-       location = locationText;
+        location = locationText;
     }
 
     // initialize listener on attach
@@ -107,6 +155,20 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
         super.onDetach();
 
         listener = null;
+    }
+
+    // Stores the spinner value
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+    {
+        hour = parent.getItemAtPosition(position).toString();
+        TextView cost = getActivity().findViewById(R.id.val_estimate);
+        cost.setText(Integer.toString(Integer.parseInt(hour) * hourlyRate));
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     // Google maps added method for map load response

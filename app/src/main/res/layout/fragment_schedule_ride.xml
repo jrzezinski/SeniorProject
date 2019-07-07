@@ -34,93 +34,83 @@
         android:layout_weight="50">
 
         <TextView
-            android:id="@+id/cruise_prompt"
+            android:id="@+id/time_prompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Direct to location?"
-            android:layout_marginTop="20dp"
+            android:text="Desired ride time"
+            android:layout_marginTop="30dp"
             android:layout_marginLeft="40dp"
             android:textSize="20dp" />
 
-        <Switch
-            android:id="@+id/cruise_switch"
+        <Spinner
+            android:id="@+id/time_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:layout_marginLeft="30dp"
-            android:scaleX="1.25"
-            android:layout_toRightOf="@+id/cruise_prompt"
-            android:checked="true"/>
+            android:layout_toRightOf="@+id/time_prompt" />
 
         <TextView
-            android:id="@+id/cost_mile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cost per Mile (USD)"
+            android:layout_marginLeft="5dp"
             android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_alignStart="@+id/cruise_prompt"
-            android:layout_below="@+id/cruise_prompt"/>
+            android:text="hrs"
+            android:layout_toRightOf="@+id/time_spinner"
+            android:layout_alignTop="@+id/time_spinner"/>
 
         <TextView
-            android:id="@+id/val_mile"
+            android:id="@+id/pickup_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$TempValue"
+            android:text="Pickup Time"
             android:textSize="20dp"
-            android:layout_toRightOf="@+id/cost_mile"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/cruise_switch"
-            android:layout_alignStart="@+id/cruise_switch"/>
+            android:layout_marginTop="30dp"
+            android:layout_alignStart="@+id/time_prompt"
+            android:layout_below="@+id/time_prompt"/>
+
+        <EditText
+            android:id="@+id/pickup_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Choose Time"
+            android:textSize="20dp"
+            android:layout_toRightOf="@+id/pickup_time"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/time_spinner"
+            android:layout_alignStart="@+id/time_spinner"
+            android:focusable="false"
+            android:enabled="true"/>
 
         <TextView
             android:id="@+id/cost_estimate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Estimated Cost (USD)"
+            android:text="Cost (USD)"
             android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_alignStart="@+id/cost_mile"
-            android:layout_below="@+id/cost_mile"/>
+            android:layout_marginTop="35dp"
+            android:layout_alignStart="@+id/pickup_time"
+            android:layout_below="@+id/pickup_time"/>
 
         <TextView
             android:id="@+id/val_estimate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="350"
+            android:text="0"
             android:textSize="20dp"
             android:layout_toRightOf="@+id/cost_estimate"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_below="@id/val_mile"
-            android:layout_alignStart="@+id/cruise_switch"/>
-
-        <TextView
-            android:id="@+id/time_estimate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Estimated Time"
-            android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/cost_estimate"
-            android:layout_alignStart="@+id/cost_estimate"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00:30:00"
-            android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_alignStart="@+id/val_estimate"
-            android:layout_below="@+id/val_estimate"/>
+            android:layout_below="@id/pickup_val"
+            android:layout_alignStart="@+id/time_spinner"/>
 
         <Button
             android:id="@+id/schedule_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Schedule your ride"
-            android:layout_marginTop="20dp"
-            android:layout_below="@id/time_estimate"
+            android:layout_marginTop="30dp"
+            android:layout_below="@id/cost_estimate"
             android:layout_centerHorizontal="true"/>
 
         <Button
@@ -128,8 +118,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pay now"
-            android:layout_marginTop="20dp"
-            android:layout_below="@id/time_estimate"
+            android:layout_marginTop="30dp"
+            android:layout_below="@id/cost_estimate"
             android:layout_centerHorizontal="true"
             android:visibility="gone"/>
 

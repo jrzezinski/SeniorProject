@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".JobSelectFragment">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/title_set_sail"
+        android:layout_height="0dp"
+        android:layout_weight="15">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rides ready to set sail!"
+            android:textSize="30dp"
+            android:gravity="center"
+            android:layout_marginTop="55dp"/>
+    </RelativeLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/title_set_sail"
+        android:gravity="center_horizontal"
+        android:id="@+id/job_list"
+        android:layout_height="0dp"
+        android:layout_weight="70">
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/jobs_recycler_view">
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="15">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm selection"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -3,10 +3,12 @@
 package group.project.buberapp;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.util.Log;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,19 +17,51 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.EditText;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
+    private static final String TAG = "MainActivity";
+    private static final String KEY_EMAIL = "Email";
+    private static final String KEY_PASSWORD = "Password";
+    private static final String KEY_NAME = "Name";
+    private static final String KEY_PHONE = "Phone";
+    private static final String KEY_BOAT = "Boat";
+    private static final String KEY_DLNUMBER = "DL Number";
+    private static final String KEY_BOATINGID = "Boating ID";
+    
     // Fields from app
     private TextInputLayout textEmail;
     private TextInputLayout textPassword;
     private TextInputLayout textName;
     private TextInputLayout textPhone;
+    private TextInputLayout textDriverId;
+    private TextInputLayout textBoatId;
     private Spinner typeSelect;
     private Switch signupSwitch;
     private Switch captainSwitch;
+    
+    private EditText dataEmail;
+    private EditText dataPassword;
+    private EditText dataName;
+    private EditText dataPhone;
+    private EditText dataBoatID;
+    private EditText dataDLNumber;
 
     // Greeter fields from xml form
     private TextView capSignup;
@@ -37,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     
     //Cloud Firestore Instance 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference capRef = db.collection("captain");
+    private CollectionReference userRef = db.collection("users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,9 +85,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         textPassword = findViewById(R.id.text_input_password);
         textName = findViewById(R.id.text_input_name);
         textPhone = findViewById(R.id.text_input_phone);
+        textDriverId = findViewById(R.id.text_input_driverId);
+        textBoatId = findViewById(R.id.text_input_boatId);
         typeSelect = findViewById(R.id.type_spinner);
         signupSwitch = findViewById(R.id.signup_switch);
         captainSwitch = findViewById(R.id.captain_switch);
+        
+        dataEmail = findViewById(R.id.email);
+        dataPassword = findViewById(R.id.password);
+        dataName = findViewById(R.id.name);
+        dataPhone = findViewById(R.id.phone);
+        dataDLNumber = findViewById(R.id.driverId);
+        dataBoatID = findViewById(R.id.boatId);
 
         // Initialize greeter fields from xml form
         capSignup = findViewById(R.id.greet_captain_signup);
@@ -72,6 +117,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         textName.setVisibility(View.GONE);
         textPhone.setVisibility(View.GONE);
         typeSelect.setVisibility(View.GONE);
+        textBoatId.setVisibility(View.GONE);
+        textDriverId.setVisibility(View.GONE);
 
         // Listen for Switch changes
         signupSwitch.setOnCheckedChangeListener(this);
@@ -159,18 +206,84 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    private boolean checkDriver()
+    {
+        String driverIn = textDriverId.getEditText().getText().toString().trim();
+
+        if (driverIn.isEmpty())
+        {
+            textDriverId.setError("Please use a valid Liscence Number.");
+            return false;
+        }
+        else
+        {
+            textDriverId.setError(null);
+            return true;
+        }
+    }
+
+    private boolean checkBoatSafety()
+    {
+        String boatIn = textBoatId.getEditText().getText().toString().trim();
+
+        if (boatIn.isEmpty())
+        {
+            textBoatId.setError("Please use a valid email.");
+            return false;
+        }
+        else
+        {
+            textBoatId.setError(null);
+            return true;
+        }
+    }
+
     // Check app input, if good go to next page
     public void confirmInput(View v)
     {
+            String emailIn = dataEmail.getText().toString();
+            String passIn = dataPassword.getText().toString();
+            String nameIn = dataName.getText().toString();
+            String phoneIn = dataPhone.getText().toString();
+            String driverIn = dataDLNumber.getText().toString();
+            String boatIn = dataBoatID.getText().toString();
+
+            Map<String,Object> myCap = new HashMap<String,Object>();
+            myCap.put(KEY_EMAIL, emailIn);
+            myCap.put(KEY_PASSWORD, passIn);
+            myCap.put(KEY_NAME, nameIn);
+            myCap.put(KEY_PHONE, phoneIn);
+            myCap.put(KEY_DLNUMBER, driverIn);
+            myCap.put(KEY_BOATINGID , boatIn);
+
+            Map<String,Object> myUser = new HashMap<String,Object>();
+            myUser.put(KEY_EMAIL, emailIn);
+            myUser.put(KEY_PASSWORD, passIn);
+            myUser.put(KEY_NAME, nameIn);
+            myUser.put(KEY_PHONE, phoneIn);
+        
         if(signupSwitch.isChecked() && captainSwitch.isChecked())
         {
-            db.collection("captain");
-            
-                // Captain Signup field checks
-                if(!checkEmail() | !checkPass() | !checkName() | !checkPhone())
-                {
-                    return;
+            // Captain Signup field checks
+            if(!checkEmail() | !checkPass() | !checkName() | !checkPhone() | !checkDriver() | !checkBoatSafety())
+            {
+                return;
+            }
+
+            // add captain to DB
+            capRef.add(myCap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Toast.makeText(MainActivity.this, "User Saved", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
                 }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, e.toString());
+                }
+            });
         }
         else if(signupSwitch.isChecked())
         {
@@ -179,6 +292,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             {
                 return;
             }
+
+            // add user to DB
+            userRef.add(myUser).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Toast.makeText(MainActivity.this, "User Saved", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, e.toString());
+                }
+            });
         }
         else if(captainSwitch.isChecked())
         {
@@ -187,6 +315,49 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             {
                 return;
             }
+
+            // Use this block to check if field exists
+            final String currentEmail = textEmail.getEditText().getText().toString().trim();
+            final String currentPass = textPassword.getEditText().getText().toString().trim();
+            Query query = capRef.whereEqualTo("Email", currentEmail);
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task)
+                {
+                    if(task.isSuccessful())
+                    {
+                        for(DocumentSnapshot snap : task.getResult())
+                        {
+                            String email = snap.getString("Email");
+                            String pass = snap.getString("Password");
+                            String name = snap.getString("Name");
+                            String phone = snap.getString("Phone");
+                            String userId = snap.getId();
+
+                            if(email.equals(currentEmail) /*&& pass.equals(currentPass)*/)
+                            {
+                                Toast.makeText(MainActivity.this, "YES", Toast.LENGTH_SHORT).show();
+
+                                // Open second page/activity (UserHome)
+                                Intent intent = new Intent(MainActivity.this, UserHome.class);
+                                intent.putExtra("EXTRA_Final_email", email);
+                                intent.putExtra("EXTRA_Final_pass", pass);
+                                intent.putExtra("EXTRA_Final_name", name);
+                                intent.putExtra("EXTRA_Final_phone", phone);
+                                intent.putExtra("EXTRA_Final_userType", "captain");
+                                intent.putExtra("EXTRA_Final_userId", userId);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+
+                    if(task.getResult().size() == 0)
+                    {
+                        Toast.makeText(MainActivity.this, "NO", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
         else
         {
@@ -195,11 +366,49 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             {
                 return;
             }
-        }
 
-        // Open second page/activity (UserHome)
-        Intent intent = new Intent(this, UserHome.class);
-        startActivity(intent);
+            // Use this block to check if field exists
+            final String currentEmail = textEmail.getEditText().getText().toString().trim();
+            Query query = userRef.whereEqualTo("Email", currentEmail);
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task)
+                {
+                    if(task.isSuccessful())
+                    {
+                        for(DocumentSnapshot snap : task.getResult())
+                        {
+                            String email = snap.getString("Email");
+                            String pass = snap.getString("Password");
+                            String name = snap.getString("Name");
+                            String phone = snap.getString("Phone");
+                            String userId = snap.getId();
+
+                            if(email.equals(currentEmail) /* && check the pass here instead of comment*/)
+                            {
+                                Toast.makeText(MainActivity.this, "YES", Toast.LENGTH_SHORT).show();
+
+                                // Open second page/activity (UserHome)
+                                Intent intent = new Intent(MainActivity.this, UserHome.class);
+                                intent.putExtra("EXTRA_Final_email", email);
+                                intent.putExtra("EXTRA_Final_pass", pass);
+                                intent.putExtra("EXTRA_Final_name", name);
+                                intent.putExtra("EXTRA_Final_phone", phone);
+                                intent.putExtra("EXTRA_Final_userType", "user");
+                                intent.putExtra("EXTRA_Final_userId", userId);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+
+                    if(task.getResult().size() == 0)
+                    {
+                        Toast.makeText(MainActivity.this, "NO", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 
     // Methods for spinner
@@ -225,6 +434,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             textName.setVisibility(View.VISIBLE);
             textPhone.setVisibility(View.VISIBLE);
             typeSelect.setVisibility(View.VISIBLE);
+            textBoatId.setVisibility(View.VISIBLE);
+            textDriverId.setVisibility(View.VISIBLE);
 
             // show appropriate greeting
             capSignup.setVisibility(View.VISIBLE);
@@ -238,6 +449,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             textName.setVisibility(View.VISIBLE);
             textPhone.setVisibility(View.VISIBLE);
             typeSelect.setVisibility(View.GONE);
+            textBoatId.setVisibility(View.GONE);
+            textDriverId.setVisibility(View.GONE);
 
             // show appropriate greeting
             capSignup.setVisibility(View.GONE);
@@ -251,6 +464,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             textName.setVisibility(View.GONE);
             textPhone.setVisibility(View.GONE);
             typeSelect.setVisibility(View.GONE);
+            textBoatId.setVisibility(View.GONE);
+            textDriverId.setVisibility(View.GONE);
 
             // show appropriate greeting
             capSignup.setVisibility(View.GONE);
@@ -264,6 +479,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             textName.setVisibility(View.GONE);
             textPhone.setVisibility(View.GONE);
             typeSelect.setVisibility(View.GONE);
+            textBoatId.setVisibility(View.GONE);
+            textDriverId.setVisibility(View.GONE);
 
             // show appropriate greeting
             capSignup.setVisibility(View.GONE);

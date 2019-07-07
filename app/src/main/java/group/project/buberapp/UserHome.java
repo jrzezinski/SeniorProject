@@ -2,6 +2,7 @@
 
 package group.project.buberapp;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -44,6 +46,13 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
     HelpFragment helpFragment;
     RideHistoryFragment rideHistoryFragment;
 
+    public static String userEmail;
+    public static String userPass;
+    public static String userName;
+    public static String userPhone;
+    public static String userType;
+    public static String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -58,6 +67,12 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
         scheduleRideFragment = new ScheduleRideFragment();
         helpFragment = new HelpFragment();
         rideHistoryFragment = new RideHistoryFragment();
+        userEmail = getIntent().getStringExtra("EXTRA_Final_email");
+        userPass = getIntent().getStringExtra("EXTRA_Final_pass");
+        userName = getIntent().getStringExtra("EXTRA_Final_name");
+        userPhone = getIntent().getStringExtra("EXTRA_Final_phone");
+        userType = getIntent().getStringExtra("EXTRA_Final_userType");
+        userId = getIntent().getStringExtra("EXTRA_Final_userId");
 
         // Set the toolbar Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -107,6 +122,23 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
         return null;
     }
 
+    /*
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        super.onCreateOptionsMenu(menu);
+
+        // set navigation option depending on user type
+        if (userType.equals("captain"))
+        {
+            MenuItem changeThisItem = menu.findItem(R.id.schdule_ride);
+            changeThisItem.setTitle("Select a Job");
+        }
+
+        return true;
+    }
+    */
+
     // send lat and long data and open schedule a ride fragment
     @Override
     public void onInputMapSent(CharSequence input)
@@ -131,7 +163,14 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit();
                 break;
             case R.id.schdule_ride:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ScheduleRideFragment()).commit();
+                if (userType.equals("captain"))
+                {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new JobSelectFragment()).commit();
+                }
+                else
+                {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ScheduleRideFragment()).commit();
+                }
                 break;
             case R.id.ride_history:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RideHistoryFragment()).commit();
