@@ -8,6 +8,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.util.Log;
 import android.widget.Adapter;
@@ -24,6 +25,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.firebase.ui.auth.data.model.User;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.SetOptions;
@@ -37,6 +39,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class AccountInfo extends Fragment {
@@ -84,16 +89,23 @@ public class AccountInfo extends Fragment {
         String currentDL = UserHome.userDL;
         String currentID = UserHome.userId;
 
-        dataEmail.setHint(currentEmail);
-        dataPassword.setHint(currentPass);
-        dataName.setHint(currentName);
-        dataPhone.setHint(currentPhone);
-        dataBoatID.setHint(currentBoatId);
+        dataEmail.setText(currentEmail);
+        dataPassword.setText(currentPass);
+        dataName.setText(currentName);
+        dataPhone.setText(currentPhone);
+        dataBoatID.setText(currentBoatId);
         /* dataType.setHint(currentType); */
-        dataDLNumber.setHint(currentDL);
+        dataDLNumber.setText(currentDL);
+
+        Button update = view.findViewById(R.id.update_button);
+        update.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmUpdate(v);
+            }
+        });
 
         return view;
-
     }
 
     public void confirmUpdate(View v) {
@@ -105,43 +117,47 @@ public class AccountInfo extends Fragment {
         String driverIn = dataDLNumber.getText().toString();
         String boatIn = dataBoatID.getText().toString();
 
-        capDoc.update(KEY_EMAIL, emailIn);
-        capDoc.update(KEY_PASSWORD, passIn);
-        capDoc.update(KEY_NAME, nameIn);
-        capDoc.update(KEY_PHONE, phoneIn);
-        capDoc.update(KEY_DLNUMBER, driverIn);
-        capDoc.update(KEY_BOATINGID , boatIn)
-                .addOnSuccessListener(new OnSuccessListener< Void >() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getContext(), "User Info Updated!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent (getActivity(),AccountInfo.class));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), "Error updating!", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, e.toString());
-            }
-        });
+        if(UserHome.userType.equals("captain"))
+        {
+            Map<String,Object> myAccount = new HashMap<String,Object>();
+            myAccount.put(KEY_EMAIL, emailIn);
+            myAccount.put(KEY_PASSWORD, passIn);
+            myAccount.put(KEY_NAME, nameIn);
+            myAccount.put(KEY_PHONE, phoneIn);
+            myAccount.put(KEY_DLNUMBER, driverIn);
+            myAccount.put(KEY_BOATINGID , boatIn);
 
-        userDoc.update(KEY_EMAIL, emailIn);
-        userDoc.update(KEY_PASSWORD, passIn);
-        userDoc.update(KEY_NAME, nameIn);
-        userDoc.update(KEY_PHONE, phoneIn)
-                .addOnSuccessListener(new OnSuccessListener< Void >() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getContext(), "User Info Updated!", Toast.LENGTH_SHORT).show();
-                        // startActivity(new Intent(getActivity(), AccountInfo.class));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), "Error updating!", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, e.toString());
-            }
-        });
+            capDoc.update(myAccount).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(getContext(), "User Info Updated!", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(), "Error updating!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else
+        {
+            Map<String,Object> myAccount = new HashMap<String,Object>();
+            myAccount.put(KEY_EMAIL, emailIn);
+            myAccount.put(KEY_PASSWORD, passIn);
+            myAccount.put(KEY_NAME, nameIn);
+            myAccount.put(KEY_PHONE, phoneIn);
 
+            userDoc.update(myAccount).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(getContext(), "User Info Updated!", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(), "Error updating!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }
