@@ -149,7 +149,7 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
                         if(response.toString().contains("Successful"))
                         {
                             Toast.makeText(PaymentActivity.this, "Transaction successful!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(PaymentActivity.this, UserHome.class);
+                            Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
                             startActivity(intent);
                         }
                         else
