@@ -131,6 +131,7 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
                 myRide.put("rideTime", hoursChosen);
                 myRide.put("RideEndLoc", location);
                 myRide.put("SeekerID", UserHome.userId);
+                myRide.put("OffererID", null);
 
                 // Send info to Database
                 jobList.add(myRide).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
