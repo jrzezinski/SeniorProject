@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private static final String KEY_BOAT = "Boat";
     private static final String KEY_DLNUMBER = "DL Number";
     private static final String KEY_BOATINGID = "Boating ID";
-    
+
     // Fields from app
     private TextInputLayout textEmail;
     private TextInputLayout textPassword;
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Spinner typeSelect;
     private Switch signupSwitch;
     private Switch captainSwitch;
-    
+
     private EditText dataEmail;
     private EditText dataPassword;
     private EditText dataName;
@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private TextView riderSignup;
     private TextView capLogin;
     private TextView riderLogin;
-    
-    //Cloud Firestore Instance 
+
+    //Cloud Firestore Instance
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference capRef = db.collection("captain");
     private CollectionReference userRef = db.collection("users");
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         typeSelect = findViewById(R.id.type_spinner);
         signupSwitch = findViewById(R.id.signup_switch);
         captainSwitch = findViewById(R.id.captain_switch);
-        
+
         dataEmail = findViewById(R.id.email);
         dataPassword = findViewById(R.id.password);
         dataName = findViewById(R.id.name);
@@ -241,27 +241,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // Check app input, if good go to next page
     public void confirmInput(View v)
     {
-            String emailIn = dataEmail.getText().toString();
-            String passIn = dataPassword.getText().toString();
-            String nameIn = dataName.getText().toString();
-            String phoneIn = dataPhone.getText().toString();
-            String driverIn = dataDLNumber.getText().toString();
-            String boatIn = dataBoatID.getText().toString();
+        String emailIn = dataEmail.getText().toString();
+        String passIn = dataPassword.getText().toString();
+        String nameIn = dataName.getText().toString();
+        String phoneIn = dataPhone.getText().toString();
+        String driverIn = dataDLNumber.getText().toString();
+        String boatIn = dataBoatID.getText().toString();
 
-            Map<String,Object> myCap = new HashMap<String,Object>();
-            myCap.put(KEY_EMAIL, emailIn);
-            myCap.put(KEY_PASSWORD, passIn);
-            myCap.put(KEY_NAME, nameIn);
-            myCap.put(KEY_PHONE, phoneIn);
-            myCap.put(KEY_DLNUMBER, driverIn);
-            myCap.put(KEY_BOATINGID , boatIn);
+        Map<String,Object> myCap = new HashMap<String,Object>();
+        myCap.put(KEY_EMAIL, emailIn);
+        myCap.put(KEY_PASSWORD, passIn);
+        myCap.put(KEY_NAME, nameIn);
+        myCap.put(KEY_PHONE, phoneIn);
+        myCap.put(KEY_DLNUMBER, driverIn);
+        myCap.put(KEY_BOATINGID , boatIn);
 
-            Map<String,Object> myUser = new HashMap<String,Object>();
-            myUser.put(KEY_EMAIL, emailIn);
-            myUser.put(KEY_PASSWORD, passIn);
-            myUser.put(KEY_NAME, nameIn);
-            myUser.put(KEY_PHONE, phoneIn);
-        
+        Map<String,Object> myUser = new HashMap<String,Object>();
+        myUser.put(KEY_EMAIL, emailIn);
+        myUser.put(KEY_PASSWORD, passIn);
+        myUser.put(KEY_NAME, nameIn);
+        myUser.put(KEY_PHONE, phoneIn);
+
         if(signupSwitch.isChecked() && captainSwitch.isChecked())
         {
             // Captain Signup field checks
@@ -333,6 +333,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             String pass = snap.getString("Password");
                             String name = snap.getString("Name");
                             String phone = snap.getString("Phone");
+                            String boatId = snap.getString("Boating ID");
+                            String userDL = snap.getString("DL Number");
                             String userId = snap.getId();
 
                             if(email.equals(currentEmail) /*&& pass.equals(currentPass)*/)
@@ -347,6 +349,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 intent.putExtra("EXTRA_Final_phone", phone);
                                 intent.putExtra("EXTRA_Final_userType", "captain");
                                 intent.putExtra("EXTRA_Final_userId", userId);
+                                intent.putExtra("EXTRA_Final_boatId", boatId);
+                                intent.putExtra("EXTRA_Final_userDL", userDL);
                                 startActivity(intent);
                             }
                         }
