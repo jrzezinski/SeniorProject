@@ -51,6 +51,8 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
     public static String userName;
     public static String userPhone;
     public static String userType;
+    public static String userboatId;
+    public static String userDL;
     public static String userId;
 
     @Override
@@ -71,6 +73,8 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
         userPass = getIntent().getStringExtra("EXTRA_Final_pass");
         userName = getIntent().getStringExtra("EXTRA_Final_name");
         userPhone = getIntent().getStringExtra("EXTRA_Final_phone");
+        userboatId = getIntent().getStringExtra("EXTRA_Final_boatId");
+        userDL = getIntent().getStringExtra("EXTRA_Final_userDL");
         userType = getIntent().getStringExtra("EXTRA_Final_userType");
         userId = getIntent().getStringExtra("EXTRA_Final_userId");
 
@@ -177,6 +181,9 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
                 break;
             case R.id.help:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HelpFragment()).commit();
+                break;
+            case R.id.account_info:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AccountInfo()).commit();
                 break;
         }
 

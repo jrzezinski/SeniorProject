@@ -8,6 +8,10 @@
     <group android:checkableBehavior="single"
         android:id="@+id/menu_side">
         <item
+            android:id="@+id/account_info"
+            android:icon="@drawable/ic_help"
+            android:title="User" />
+        <item
             android:id="@+id/map_view"
             android:icon="@drawable/ic_map"
             android:title="Map" />
