@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -93,6 +94,15 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        // add menu selectRide if captain logged in
+        Menu menu = navigationView.getMenu();
+        MenuItem selectRide = menu.findItem(R.id.schdule_ride);
+
+        if (userType.equals("captain"))
+        {
+            selectRide.setVisible(true);
+        }
     }
 
     // search user input location on the map
