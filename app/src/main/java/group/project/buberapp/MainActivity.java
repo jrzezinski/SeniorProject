@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         String driverIn = dataDLNumber.getText().toString();
         String boatIn = dataBoatID.getText().toString();
 
-        Map<String,Object> myCap = new HashMap<String,Object>();
+        final Map<String,Object> myCap = new HashMap<String,Object>();
         myCap.put(KEY_EMAIL, emailIn);
         myCap.put(KEY_PASSWORD, passIn);
         myCap.put(KEY_NAME, nameIn);
@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         myCap.put(KEY_DLNUMBER, driverIn);
         myCap.put(KEY_BOATINGID , boatIn);
 
-        Map<String,Object> myUser = new HashMap<String,Object>();
+        final Map<String,Object> myUser = new HashMap<String,Object>();
         myUser.put(KEY_EMAIL, emailIn);
         myUser.put(KEY_PASSWORD, passIn);
         myUser.put(KEY_NAME, nameIn);
@@ -270,18 +270,36 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 return;
             }
 
-            // add captain to DB
-            capRef.add(myCap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            // Use this block to check if field exists and add user if not
+            final String currentEmail = textEmail.getEditText().getText().toString().trim();
+            Query query = capRef.whereEqualTo("Email", currentEmail);
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+            {
                 @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    Toast.makeText(MainActivity.this, "User Saved", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainActivity.this, MainActivity.class));
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, e.toString());
+                public void onComplete(@NonNull Task<QuerySnapshot> task)
+                {
+                    if (task.isSuccessful())
+                    {
+                        Toast.makeText(MainActivity.this, "Email found! Please sign in instead!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if(task.getResult().size() == 0)
+                    {
+                        // add captain to DB
+                        capRef.add(myCap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Toast.makeText(MainActivity.this, "User Saved", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(MainActivity.this, MainActivity.class));
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, e.toString());
+                            }
+                        });
+                    }
                 }
             });
         }
@@ -293,19 +311,37 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 return;
             }
 
-            // add user to DB
-            userRef.add(myUser).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    Toast.makeText(MainActivity.this, "User Saved", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainActivity.this, MainActivity.class));
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, e.toString());
-                }
+            // Use this block to check if field exists and add user if not
+            final String currentEmail = textEmail.getEditText().getText().toString().trim();
+            Query query = capRef.whereEqualTo("Email", currentEmail);
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+            {
+                  @Override
+                  public void onComplete(@NonNull Task<QuerySnapshot> task)
+                  {
+                      if (task.isSuccessful())
+                      {
+                          Toast.makeText(MainActivity.this, "Email found! Please sign in instead!", Toast.LENGTH_SHORT).show();
+                      }
+
+                      if(task.getResult().size() == 0)
+                      {
+                          // add user to DB
+                          userRef.add(myUser).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                              @Override
+                              public void onSuccess(DocumentReference documentReference) {
+                                  Toast.makeText(MainActivity.this, "User Saved", Toast.LENGTH_SHORT).show();
+                                  startActivity(new Intent(MainActivity.this, MainActivity.class));
+                              }
+                          }).addOnFailureListener(new OnFailureListener() {
+                              @Override
+                              public void onFailure(@NonNull Exception e) {
+                                  Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                                  Log.d(TAG, e.toString());
+                              }
+                          });
+                      }
+                  }
             });
         }
         else if(captainSwitch.isChecked())
@@ -337,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             String userDL = snap.getString("DL Number");
                             String userId = snap.getId();
 
-                            if(email.equals(currentEmail) /*&& pass.equals(currentPass)*/)
+                            if(email.equals(currentEmail) && pass.equals(currentPass))
                             {
                                 Toast.makeText(MainActivity.this, "Welcome!", Toast.LENGTH_SHORT).show();
 
@@ -373,6 +409,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             // Use this block to check if field exists
             final String currentEmail = textEmail.getEditText().getText().toString().trim();
+            final String currentPass = textPassword.getEditText().getText().toString().trim();
             Query query = userRef.whereEqualTo("Email", currentEmail);
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
             {
@@ -389,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             String phone = snap.getString("Phone");
                             String userId = snap.getId();
 
-                            if(email.equals(currentEmail) /* && check the pass here instead of comment*/)
+                            if(email.equals(currentEmail) && pass.equals(currentPass))
                             {
                                 Toast.makeText(MainActivity.this, "Welcome!", Toast.LENGTH_SHORT).show();
 
@@ -437,7 +474,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         {
             textName.setVisibility(View.VISIBLE);
             textPhone.setVisibility(View.VISIBLE);
-            typeSelect.setVisibility(View.VISIBLE);
+            //typeSelect.setVisibility(View.VISIBLE);
             textBoatId.setVisibility(View.VISIBLE);
             textDriverId.setVisibility(View.VISIBLE);
 
@@ -452,7 +489,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         {
             textName.setVisibility(View.VISIBLE);
             textPhone.setVisibility(View.VISIBLE);
-            typeSelect.setVisibility(View.GONE);
+            //typeSelect.setVisibility(View.GONE);
             textBoatId.setVisibility(View.GONE);
             textDriverId.setVisibility(View.GONE);
 
@@ -467,7 +504,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         {
             textName.setVisibility(View.GONE);
             textPhone.setVisibility(View.GONE);
-            typeSelect.setVisibility(View.GONE);
+            //typeSelect.setVisibility(View.GONE);
             textBoatId.setVisibility(View.GONE);
             textDriverId.setVisibility(View.GONE);
 
@@ -482,7 +519,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         {
             textName.setVisibility(View.GONE);
             textPhone.setVisibility(View.GONE);
-            typeSelect.setVisibility(View.GONE);
+            //typeSelect.setVisibility(View.GONE);
             textBoatId.setVisibility(View.GONE);
             textDriverId.setVisibility(View.GONE);
 
