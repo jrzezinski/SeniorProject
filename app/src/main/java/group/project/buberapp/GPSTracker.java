@@ -51,7 +51,7 @@ public class GPSTracker extends Service implements LocationListener {
 
     public double getLongitude() { //returning void but it used to be double when returning longitude
         if (location != null) {
-            location.getLongitude();
+            longitude = location.getLongitude();
         }
 
         return longitude;
@@ -88,8 +88,8 @@ public class GPSTracker extends Service implements LocationListener {
                     if (locationManager != null) {
                         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if (location != null) {
-                            getLatitude();
-                            getLongitude();
+                            latitude = getLatitude();
+                            longitude = getLongitude();
                         }
                     }
                 }
@@ -103,13 +103,13 @@ public class GPSTracker extends Service implements LocationListener {
                         location = locationManager
                                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if (location != null) {
-                            getLatitude();
-                            getLongitude();
+                                latitude = getLatitude();
+                                longitude = getLongitude();
                         } else {
                             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             if (location != null) {
-                                getLatitude();
-                                getLongitude();
+                                latitude = getLatitude();
+                                longitude = getLongitude();
                             }
                         }
                     }
@@ -150,3 +150,5 @@ public class GPSTracker extends Service implements LocationListener {
     }
     
 }
+
+//used http://www.codesenior.com/en/tutorial/Android-GPS-Location-Example

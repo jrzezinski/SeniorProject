@@ -95,6 +95,15 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        // set navigation user info
+        View navHeader = navigationView.getHeaderView(0);
+
+        TextView navName = navHeader.findViewById(R.id.nav_name);
+        navName.setText(userName);
+
+        TextView navEmail = navHeader.findViewById(R.id.nav_email);
+        navEmail.setText(userEmail);
+
         // add menu selectRide if captain logged in
         Menu menu = navigationView.getMenu();
         MenuItem selectRide = menu.findItem(R.id.schdule_ride);

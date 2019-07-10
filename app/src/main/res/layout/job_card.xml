@@ -27,6 +27,13 @@
             android:layout_toRightOf="@+id/ride_time_title"
             android:id="@+id/ride_time"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hour(s)"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/ride_time"/>
+
         <!-- Pickup time stuff -->
         <TextView
             android:layout_width="wrap_content"
