@@ -46,6 +46,7 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
     ScheduleRideFragment scheduleRideFragment;
     HelpFragment helpFragment;
     RideHistoryFragment rideHistoryFragment;
+    CurrentRidesFragment currentRidesFragment;
 
     public static String userEmail;
     public static String userPass;
@@ -70,6 +71,8 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
         scheduleRideFragment = new ScheduleRideFragment();
         helpFragment = new HelpFragment();
         rideHistoryFragment = new RideHistoryFragment();
+        currentRidesFragment = new CurrentRidesFragment();
+
         userEmail = getIntent().getStringExtra("EXTRA_Final_email");
         userPass = getIntent().getStringExtra("EXTRA_Final_pass");
         userName = getIntent().getStringExtra("EXTRA_Final_name");
@@ -83,11 +86,19 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // open map fragment initially not on rotate
+        // open map fragment for rider and schedule fragment for offerer initially, not on rotate
         if(savedInstanceState == null)
         {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit();
-            navigationView.setCheckedItem(R.id.map_view);
+            if (userType.equals("captain"))
+            {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new JobSelectFragment()).commit();
+                navigationView.setCheckedItem(R.id.schdule_ride);
+            }
+            else
+            {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit();
+                navigationView.setCheckedItem(R.id.map_view);
+            }
         }
 
         // Add top left nav drawer toggle
@@ -104,13 +115,18 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
         TextView navEmail = navHeader.findViewById(R.id.nav_email);
         navEmail.setText(userEmail);
 
-        // add menu selectRide if captain logged in
+        // add menu selectRide if captain logged in or map if user logged in
         Menu menu = navigationView.getMenu();
         MenuItem selectRide = menu.findItem(R.id.schdule_ride);
+        MenuItem mapView = menu.findItem(R.id.map_view);
 
         if (userType.equals("captain"))
         {
             selectRide.setVisible(true);
+        }
+        else if (userType.equals("user"))
+        {
+            mapView.setVisible(true);
         }
     }
 
@@ -145,23 +161,6 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
         return null;
     }
 
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        super.onCreateOptionsMenu(menu);
-
-        // set navigation option depending on user type
-        if (userType.equals("captain"))
-        {
-            MenuItem changeThisItem = menu.findItem(R.id.schdule_ride);
-            changeThisItem.setTitle("Select a Job");
-        }
-
-        return true;
-    }
-    */
-
     // send lat and long data and open schedule a ride fragment
     @Override
     public void onInputMapSent(CharSequence input)
@@ -194,6 +193,9 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
                 {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ScheduleRideFragment()).commit();
                 }
+                break;
+            case R.id.current_rides:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CurrentRidesFragment()).commit();
                 break;
             case R.id.ride_history:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RideHistoryFragment()).commit();

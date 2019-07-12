@@ -14,7 +14,12 @@
         <item
             android:id="@+id/map_view"
             android:icon="@drawable/ic_map"
-            android:title="Map" />
+            android:title="Map"
+            android:visible="false"/>
+        <item
+            android:id="@+id/current_rides"
+            android:icon="@drawable/ic_waiting"
+            android:title="Current Rides" />
         <item
             android:id="@+id/schdule_ride"
             android:icon="@drawable/ic_boatride"

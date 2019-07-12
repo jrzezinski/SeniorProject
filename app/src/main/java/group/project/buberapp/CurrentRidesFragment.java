@@ -26,7 +26,7 @@ import com.google.firebase.firestore.model.Document;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JobSelectFragment extends Fragment
+public class CurrentRidesFragment extends Fragment
 {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference jobList = db.collection("Rides");
@@ -36,7 +36,7 @@ public class JobSelectFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        final View view = inflater.inflate(R.layout.fragment_choose_job, container, false);
+        final View view = inflater.inflate(R.layout.fragment_current_rides, container, false);
 
         setUpRecyclerView(view);
 
@@ -71,21 +71,18 @@ public class JobSelectFragment extends Fragment
                     public void onClick(View v)
                     {
                         // Store user info
-                        Map<String,Object> myRide = new HashMap<String,Object>();
-                        myRide.put("OffererID", UserHome.userId);
-
                         DocumentReference job = jobList.document(jobID);
 
                         // Send info to Database
-                        job.update(myRide).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        job.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Toast.makeText(getContext(), "Job Selected", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Ride Deleted", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getContext(), "Failed to select job, try again.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Failed to delete ride, try again.", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -98,8 +95,16 @@ public class JobSelectFragment extends Fragment
 
     private void setUpRecyclerView(View view)
     {
-        //Query query = jobList.orderBy("rideTime", Query.Direction.DESCENDING);
-        Query query = jobList.whereEqualTo("OffererID", null);
+        Query query;
+
+        if (UserHome.userType.equals("captain"))
+        {
+            query = jobList.whereEqualTo("OffererID", UserHome.userId);
+        }
+        else
+        {
+            query = jobList.whereEqualTo("SeekerID", UserHome.userId);
+        }
 
         FirestoreRecyclerOptions<JobCard> options = new FirestoreRecyclerOptions.Builder<JobCard>().setQuery(query, JobCard.class).build();
         adapter = new JobCardAdapter(options);
