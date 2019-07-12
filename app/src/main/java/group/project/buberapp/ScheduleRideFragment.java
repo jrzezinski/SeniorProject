@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +34,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback, AdapterView.OnItemSelectedListener
@@ -56,6 +64,7 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
     private Calendar calendar;
     private int currentHour;
     private int currentMinute;
+    private Date pickupTimeStamp;
 
     // Database stuff
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -78,6 +87,10 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
         pickupTime = view.findViewById(R.id.pickup_val);
         hourlyRate = 150;
 
+        // lock app navigation pullout
+        DrawerLayout drawer = getActivity().findViewById(R.id.user_layout);
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
         // Fill in the spinner with the String Array in strings.xml
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.timeBlocks, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -94,10 +107,22 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
                 currentHour = calendar.get(Calendar.HOUR);
                 currentMinute = calendar.get(Calendar.MINUTE);
 
-                pickTime = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                pickTime = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener()
+                {
                     @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute)
+                    {
                         pickupTime.setText((hourOfDay < 12 ? hourOfDay : hourOfDay - 12) + ":" + (minute < 10 ? "0" + minute : minute) + " " + (hourOfDay < 12 ? "AM" : "PM"));
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm", Locale.US);
+                        String myDateStr = "" + calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + "_" + hourOfDay + ":" + minute;
+                        try
+                        {
+                            pickupTimeStamp = simpleDateFormat.parse(myDateStr);
+                        }
+                        catch (ParseException e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                 }, currentHour, currentMinute, false);
 
@@ -127,7 +152,7 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
                 // Store user info
                 Map<String,Object> myRide = new HashMap<String,Object>();
                 myRide.put("payout", payout);
-                myRide.put("pickupTime", pickup);
+                myRide.put("pickupTime", pickupTimeStamp);
                 myRide.put("rideTime", hoursChosen);
                 myRide.put("RideEndLoc", location);
                 myRide.put("SeekerID", UserHome.userId);

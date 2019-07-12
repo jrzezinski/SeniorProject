@@ -23,20 +23,51 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.model.Document;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-public class JobSelectFragment extends Fragment
+public class CurrentRidesFragment extends Fragment
 {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference jobList = db.collection("Rides");
     private JobCardAdapter adapter;
 
+    private Calendar calendar;
+    private int currentHour;
+    private int currentMinute;
+    private int currentYear;
+    private int currentMonth;
+    private int currentDay;
+    private Date currentTimeStamp;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        final View view = inflater.inflate(R.layout.fragment_choose_job, container, false);
+        final View view = inflater.inflate(R.layout.fragment_current_rides, container, false);
+
+        calendar = Calendar.getInstance();
+        currentHour = calendar.get(Calendar.HOUR);
+        currentMinute = calendar.get(Calendar.MINUTE);
+        currentYear = calendar.get(Calendar.YEAR);
+        currentMonth = calendar.get(Calendar.MONTH);
+        currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm", Locale.US);
+
+        String myDateStr = "" + currentYear + "-" + currentMonth + "-" + currentDay + "_" + currentHour + ":" + currentMinute;
+        try
+        {
+            currentTimeStamp = simpleDateFormat.parse(myDateStr);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
 
         setUpRecyclerView(view);
 
@@ -71,21 +102,18 @@ public class JobSelectFragment extends Fragment
                     public void onClick(View v)
                     {
                         // Store user info
-                        Map<String,Object> myRide = new HashMap<String,Object>();
-                        myRide.put("OffererID", UserHome.userId);
-
                         DocumentReference job = jobList.document(jobID);
 
                         // Send info to Database
-                        job.update(myRide).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        job.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Toast.makeText(getContext(), "Job Selected", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Ride Deleted", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getContext(), "Failed to select job, try again.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Failed to delete ride, try again.", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -98,8 +126,16 @@ public class JobSelectFragment extends Fragment
 
     private void setUpRecyclerView(View view)
     {
-        //Query query = jobList.orderBy("rideTime", Query.Direction.DESCENDING);
-        Query query = jobList.whereEqualTo("OffererID", null);
+        Query query;
+
+        if (UserHome.userType.equals("captain"))
+        {
+            query = jobList.whereEqualTo("OffererID", UserHome.userId);
+        }
+        else
+        {
+            query = jobList.whereEqualTo("SeekerID", UserHome.userId).whereGreaterThanOrEqualTo("pickupTime", currentTimeStamp);
+        }
 
         FirestoreRecyclerOptions<JobCard> options = new FirestoreRecyclerOptions.Builder<JobCard>().setQuery(query, JobCard.class).build();
         adapter = new JobCardAdapter(options);

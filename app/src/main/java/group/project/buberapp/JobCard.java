@@ -1,9 +1,11 @@
 package group.project.buberapp;
 
+import com.google.firebase.Timestamp;
+
 public class JobCard
 {
     private int rideTime;
-    private String pickupTime;
+    private Timestamp pickupTime;
     private int payout;
 
     public JobCard()
@@ -11,7 +13,7 @@ public class JobCard
         // empty constructor needed
     }
 
-    public JobCard(int rideTime, String pickupTime, int payout)
+    public JobCard(int rideTime, Timestamp pickupTime, int payout)
     {
         this.rideTime = rideTime;
         this.pickupTime = pickupTime;
@@ -23,7 +25,7 @@ public class JobCard
         return rideTime;
     }
 
-    public String getPickupTime()
+    public Timestamp getPickupTime()
     {
         return pickupTime;
     }

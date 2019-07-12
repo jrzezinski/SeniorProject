@@ -1,6 +1,7 @@
 package group.project.buberapp;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -225,6 +226,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap.addMarker(options);
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode)
