@@ -35,6 +35,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,7 +61,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
     public interface FragmentMapListener {
-        void onInputMapSent(CharSequence input);
+        void onInputMapSent(CharSequence input, LatLng inputLocation);
     }
 
     @Nullable
@@ -117,7 +118,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 CharSequence input = searchText.getText();
-                listener.onInputMapSent(input);
+                listener.onInputMapSent(input, userLocation);
             }
         });
 
@@ -219,7 +220,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void displayUserLocation(GoogleMap mMap, LatLng returnLocation)
     {
         // set marker
-        MarkerOptions options = new MarkerOptions().position(returnLocation);
+        MarkerOptions options = new MarkerOptions().position(returnLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
         // move camera to lat and long and set pin
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(returnLocation, 15.0f));

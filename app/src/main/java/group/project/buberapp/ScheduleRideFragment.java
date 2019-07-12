@@ -30,7 +30,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,6 +54,7 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
     // Declare Variables
     private GoogleMap mMap;
     private LatLng location;
+    private LatLng currentLocation;
     private ScheduleRideFragment.FragmentScheduleListener listener;
     private Button launchPayButton;
     private Button switchButton;
@@ -72,7 +75,7 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
 
     public interface FragmentScheduleListener
     {
-        void onInputScheduleSent(LatLng input);
+        void onInputScheduleSent(LatLng input, LatLng inputSecond);
     }
 
     @Nullable
@@ -155,6 +158,7 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
                 myRide.put("pickupTime", pickupTimeStamp);
                 myRide.put("rideTime", hoursChosen);
                 myRide.put("RideEndLoc", location);
+                myRide.put("RideStartLoc", currentLocation);
                 myRide.put("SeekerID", UserHome.userId);
                 myRide.put("OffererID", null);
 
@@ -188,9 +192,10 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
     }
 
     // update search on checkout of fragment_schedule_ride
-    public void updateSearchText(LatLng locationText)
+    public void updateSearchText(LatLng locationText, LatLng userLocation)
     {
         location = locationText;
+        currentLocation = userLocation;
     }
 
     // initialize listener on attach
@@ -246,12 +251,9 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 
+        // if user search location is given mark that instead
         if(location != null)
         {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15.0f));
-
-            // move camera to lat and long and set pin
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15.0f));
             MarkerOptions options = new MarkerOptions().position(location);
             mMap.addMarker(options);
         }
@@ -260,5 +262,25 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.0f));
         }
 
+        // if user current location is given mark that additionally
+        if(currentLocation != null)
+        {
+            MarkerOptions options = new MarkerOptions().position(currentLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            mMap.addMarker(options);
+        }
+
+        // create bounds od the map markers (north, south, ...)
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(location);
+        builder.include(currentLocation);
+        LatLngBounds bounds = builder.build();
+
+        // create the padding to keep markers away from map edge
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        int padding = (int) (height * 0.20);
+
+        // move the camera too the correct zoom for the points
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding));
     }
 }
