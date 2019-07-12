@@ -1,5 +1,4 @@
-//
-//package group.project.buberapp;
+package group.project.buberapp;
 //
 //        import android.graphics.Color;
 //        import android.support.annotation.NonNull;
@@ -15,6 +14,7 @@
 //        import com.google.firebase.firestore.DocumentSnapshot;
 //        import com.google.firebase.firestore.FirebaseFirestore;
 //
+public class RideCardAdapter {
 //public class RideCardAdapter extends FirestoreRecyclerAdapter<RideCard, RideCardAdapter.RideHolder>
 //{
 //    private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -54,4 +54,4 @@
 ////            textViewPayout = itemView.findViewById(R.id.payout);
 //        }
 //    }
-//}
+}

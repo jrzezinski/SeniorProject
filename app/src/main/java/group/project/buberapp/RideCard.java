@@ -1,6 +1,6 @@
-//package group.project.buberapp;
+package group.project.buberapp;
 //
-//public class RideCard {
+public class RideCard {
 //    private int rideTime;
 //    private String SeekerID
 //    private String OffererID
@@ -59,4 +59,4 @@
 //    {
 //        return payout;
 //    }
-//}
+}
