@@ -163,14 +163,14 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
 
     // send lat and long data and open schedule a ride fragment
     @Override
-    public void onInputMapSent(CharSequence input)
+    public void onInputMapSent(CharSequence input, LatLng userCurrLoc)
     {
-        scheduleRideFragment.updateSearchText(searchLocation(input.toString()));
+        scheduleRideFragment.updateSearchText(searchLocation(input.toString()), userCurrLoc);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, scheduleRideFragment).commit();
     }
 
     @Override
-    public void onInputScheduleSent(LatLng input)
+    public void onInputScheduleSent(LatLng input, LatLng inputLocation)
     {
 
     }
