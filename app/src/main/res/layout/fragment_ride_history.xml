@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayout"
+    android:id="@+id/RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF">
@@ -14,7 +12,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/historyTitle"
@@ -22,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="40sp"
                 android:paddingTop="115sp"
-                android:paddingRight="40sp"
+                android:paddingEnd="40sp"
                 android:text="Ride History"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
@@ -32,12 +31,22 @@
                 android:id="@+id/historyDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="65sp"
                 android:paddingStart="35sp"
-                android:paddingTop="65sp"
+                android:paddingTop="20sp"
                 android:paddingEnd="35sp"
                 android:text="Ride 4:  June 28\n\nOfferer: Aaron\nStart Time: 12:23:00 PM UTC-4\nEnd Time: 2:19:00 PM UTC-4\nStarting Location: 24.1532° N, 82.1546° E\nEnding Location: 27.9521° N, 82.4511° E\nCost: $133.24\n\n\nRide 3: June 21\n\nOfferer: Fabian\nStart Time: 2:00:00 PM UTC-4\nEnd Time: 4:15:00 PM UTC-4\nStarting Location: 27.9123° N, 82.4541° E\nEnding Location: 27.9942° N, 81.9784° E\nCost: $105.76\n\n\nRide 2:  June 13\n\nOfferer: Ariel\nStart Time: 12:23:00 PM UTC-4\nEnd Time: 2:19:00 PM UTC-4\nStarting Location: 27.9763° N, 82.4478° E\nEnding Location: 27.9521° N, 82.4511° E\nCost: $127.49\n\n\nRide 1:  June 11\n\nOfferer: Steve\nStart Time: 2:00:00 PM UTC-4\nEnd Time: 4:15:00 PM UTC-4\nStarting Location: 27.9123° N, 82.4541° E\nEnding Location: 27.9506° N, 82.4572° E\nCost: $155.37\n\n\n\n"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/loadMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="65sp"
+                android:paddingStart="30sp"
+                android:paddingEnd="30sp"
+                android:text="Load More" />
 
         </LinearLayout>
     </ScrollView>
