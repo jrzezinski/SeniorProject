@@ -1,12 +1,22 @@
 package group.project.buberapp;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,34 +28,42 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback
-{
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
+
+public class MapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private EditText searchText;
 
     private FragmentMapListener listener;
     private Button toScheduleButton;
 
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private LatLng returnLocation;
 
-    public interface FragmentMapListener
-    {
+
+    public interface FragmentMapListener {
         void onInputMapSent(CharSequence input);
     }
-    
+
     @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // initialize variables
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         searchText = view.findViewById(R.id.search_text);
@@ -55,12 +73,48 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        // send info to underlying activity
-        toScheduleButton.setOnClickListener(new View.OnClickListener()
+        // GPS stuff
+        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener()
         {
             @Override
-            public void onClick(View v)
+            public void onLocationChanged(Location location) {
+                returnLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                displayUserLocation(mMap);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        };
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.INTERNET}, 8);
+            }
+            else
             {
+                locationManager.requestLocationUpdates("gps", 2000, 0, locationListener);
+            }
+        }
+
+        // send info to underlying activity
+        toScheduleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 CharSequence input = searchText.getText();
                 listener.onInputMapSent(input);
             }
@@ -70,50 +124,40 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
     }
 
     // update search on checkout of fragment_schedule_ride
-    public void updateSearchText(CharSequence locationText)
-    {
+    public void updateSearchText(CharSequence locationText) {
         searchText.setText(locationText);
     }
 
     // initialize listener on attach
     @Override
-    public void onAttach(Context context)
-    {
+    public void onAttach(Context context) {
         super.onAttach(context);
 
         // check to make sure underlying activity implements FragmentMapListener
-        if(context instanceof FragmentMapListener)
-        {
+        if (context instanceof FragmentMapListener) {
             listener = (FragmentMapListener) context;
-        }
-        else
-        {
+        } else {
             throw new RuntimeException(context.toString() + " must implement FragmentMapListener");
         }
     }
 
     // wipe listener as it is not needed
     @Override
-    public void onDetach()
-    {
+    public void onDetach() {
         super.onDetach();
 
         listener = null;
     }
 
-    private void initMapSearch()
-    {
+    private void initMapSearch() {
         // catch user enter for searchText input
-        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener()
-        {
+        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
-            {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH
                         || actionId == EditorInfo.IME_ACTION_DONE
                         || event.getAction() == KeyEvent.ACTION_DOWN
-                        || event.getAction() == KeyEvent.KEYCODE_ENTER)
-                {
+                        || event.getAction() == KeyEvent.KEYCODE_ENTER) {
                     // run search function
                     searchLocation(searchText.getText().toString());
                     toScheduleButton.setVisibility(View.VISIBLE);
@@ -125,26 +169,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
     }
 
     // search user input location on the map
-    private LatLng searchLocation(String searchString)
-    {
+    private LatLng searchLocation(String searchString) {
         // user text
         LatLng location;
 
         // init geolocation and get user text address lat and long
         Geocoder geocoder = new Geocoder(getActivity());
         List<Address> list = new ArrayList<>();
-        try
-        {
+        try {
             list = geocoder.getFromLocationName(searchString, 1);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         // if there is at least one address get the first
-        if(list.size() > 0)
-        {
+        if (list.size() > 0) {
             // get lat and long info and map marker
             Address address = list.get(0);
             location = new LatLng(address.getLatitude(), address.getLongitude());
@@ -173,26 +212,38 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setAllGesturesEnabled(true);
 
+        initMapSearch();
+    }
+
+    private void displayUserLocation(GoogleMap mMap)
+    {
         /*// Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         */
 
-        GPSTracker currentUserSession = new GPSTracker(getContext(), mMap);
-        LatLng userLocation = currentUserSession.getLocation();
-        MarkerOptions options = new MarkerOptions().position(userLocation);
+        //GPSTracker currentUserSession = new GPSTracker(getContext(), mMap);
+        //LatLng userLocation = currentUserSession.getLocation();
+
+        MarkerOptions options = new MarkerOptions().position(returnLocation);
 
         // move camera to lat and long and set pin
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15.0f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(returnLocation, 15.0f));
         mMap.addMarker(options);
-
-        initMapSearch();
-
-
-
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode)
+        {
+            case 8:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    locationManager.requestLocationUpdates("gps", 2000, 0, locationListener);
+                }
+        }
+    }
 }
 
 
