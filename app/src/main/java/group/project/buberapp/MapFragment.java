@@ -55,7 +55,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private LatLng returnLocation;
+    private LatLng userLocation;
 
 
     public interface FragmentMapListener {
@@ -79,8 +79,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         {
             @Override
             public void onLocationChanged(Location location) {
-                returnLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                displayUserLocation(mMap);
+                userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                displayUserLocation(mMap, userLocation);
             }
 
             @Override
@@ -107,7 +107,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
             else
             {
-                locationManager.requestLocationUpdates("gps", 2000, 0, locationListener);
+                locationManager.requestLocationUpdates("gps", 0, 10, locationListener);
             }
         }
 
@@ -215,17 +215,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         initMapSearch();
     }
 
-    private void displayUserLocation(GoogleMap mMap)
+    private void displayUserLocation(GoogleMap mMap, LatLng returnLocation)
     {
-        /*// Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        */
-
-        //GPSTracker currentUserSession = new GPSTracker(getContext(), mMap);
-        //LatLng userLocation = currentUserSession.getLocation();
-
+        // set marker
         MarkerOptions options = new MarkerOptions().position(returnLocation);
 
         // move camera to lat and long and set pin
@@ -240,7 +232,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             case 8:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 {
-                    locationManager.requestLocationUpdates("gps", 2000, 0, locationListener);
+                    locationManager.requestLocationUpdates("gps", 0, 10, locationListener);
                 }
         }
     }
