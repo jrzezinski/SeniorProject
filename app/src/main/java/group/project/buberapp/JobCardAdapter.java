@@ -29,7 +29,7 @@ public class JobCardAdapter extends FirestoreRecyclerAdapter<JobCard, JobCardAda
     protected void onBindViewHolder(@NonNull JobHolder holder, int position, @NonNull JobCard model)
     {
         holder.textViewRideTime.setText(String.valueOf(model.getRideTime()));
-        holder.textViewPickupTime.setText(model.getPickupTime());
+        holder.textViewPickupTime.setText(model.getPickupTime().toDate().toString());
         holder.textViewPayout.setText(String.valueOf(model.getPayout()));
     }
 
