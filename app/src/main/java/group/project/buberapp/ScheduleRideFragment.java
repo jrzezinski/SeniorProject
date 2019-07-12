@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,6 +86,10 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
         hourSelect = view.findViewById(R.id.time_spinner);
         pickupTime = view.findViewById(R.id.pickup_val);
         hourlyRate = 150;
+
+        // lock app navigation pullout
+        DrawerLayout drawer = getActivity().findViewById(R.id.user_layout);
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         // Fill in the spinner with the String Array in strings.xml
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.timeBlocks, android.R.layout.simple_spinner_item);

@@ -195,7 +195,7 @@ public class UserHome extends AppCompatActivity implements NavigationView.OnNavi
                 }
                 break;
             case R.id.current_rides:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CurrentRidesFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CurrentRidesFragment()).commit();
                 break;
             case R.id.ride_history:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RideHistoryFragment()).commit();
