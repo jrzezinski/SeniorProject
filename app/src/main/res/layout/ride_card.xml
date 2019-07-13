@@ -17,46 +17,43 @@
         <!-- Map of trip -->
 
         <!-- Basic ride info -->
-        <FrameLayout
-            android:id="@+id/ride_map_container"
-            android:layout_width="match_parent"
-            android:layout_height="200sp">
+        <!--<FrameLayout-->
+            <!--android:id="@+id/ride_map_container"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="200sp">-->
 
-            <!-- add the google map fragment to the activity layout -->
-            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:map="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <!--&lt;!&ndash; add the google map fragment to the activity layout &ndash;&gt;-->
+            <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"-->
+                <!--xmlns:map="http://schemas.android.com/apk/res-auto"-->
+                <!--xmlns:tools="http://schemas.android.com/tools"-->
+                <!--android:id="@+id/map"-->
+                <!--android:name="com.google.android.gms.maps.SupportMapFragment"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent" />-->
 
-        </FrameLayout>
+        <!--</FrameLayout>-->
 
         <TextView
             android:id="@+id/pickup_time_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ride_map_container"
-            android:layout_marginTop="10sp"
             android:text="Pickup Time: " />
 
         <TextView
             android:id="@+id/pickup_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ride_map_container"
-            android:layout_marginTop="10sp"
             android:layout_toEndOf="@+id/pickup_time_title"
             android:text="12:00 AM" />
 
-        <TextView
-            android:id="@+id/end_lat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/beg_lon"
-            android:layout_toEndOf="@+id/end_lat_title"
-            android:text="0" />
+        <!--<TextView-->
+            <!--android:id="@+id/end_lat"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/beg_lon"-->
+            <!--android:layout_toEndOf="@+id/end_lat_title"-->
+            <!--android:text="0"-->
+            <!--tools:visibility="gone" />-->
 
         <TextView
             android:id="@+id/other_id_title"
@@ -72,13 +69,14 @@
             android:layout_below="@+id/other_id_title"
             android:text="Ride Time: " />
 
-        <TextView
-            android:id="@+id/beg_lat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ride_time"
-            android:layout_toEndOf="@+id/beg_lat_title"
-            android:text="0" />
+        <!--<TextView-->
+            <!--android:id="@+id/beg_lat"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/ride_time"-->
+            <!--android:layout_toEndOf="@+id/beg_lat_title"-->
+            <!--android:text="0"-->
+            <!--tools:visibility="gone" />-->
 
         <TextView
             android:layout_width="wrap_content"
@@ -88,25 +86,27 @@
             android:layout_toEndOf="@+id/ride_time"
             android:text="hour(s)" />
 
-        <TextView
-            android:id="@+id/end_lat_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/beg_lon_title"
-            android:text="Destination Latitude: " />
+        <!--<TextView-->
+            <!--android:id="@+id/end_lat_title"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/beg_lon_title"-->
+            <!--android:text="Destination Latitude: "-->
+            <!--tools:visibility="gone" />-->
 
-        <TextView
-            android:id="@+id/end_lon_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/end_lat_title"
-            android:text="Destination Longitude: " />
+        <!--<TextView-->
+            <!--android:id="@+id/end_lon_title"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/end_lat_title"-->
+            <!--android:text="Destination Longitude: "-->
+            <!--tools:visibility="gone" />-->
 
         <TextView
             android:id="@+id/payout_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/end_lon_title"
+            android:layout_below="@+id/ride_time_title"
             android:text="Payout: $" />
 
         <TextView
@@ -117,19 +117,21 @@
             android:layout_toEndOf="@+id/ride_time_title"
             android:text="0" />
 
-        <TextView
-            android:id="@+id/beg_lon_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/beg_lat_title"
-            android:text="Origin Longitude: " />
+        <!--<TextView-->
+            <!--android:id="@+id/beg_lon_title"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/beg_lat_title"-->
+            <!--android:text="Origin Longitude: "-->
+            <!--tools:visibility="gone" />-->
 
-        <TextView
-            android:id="@+id/beg_lat_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ride_time_title"
-            android:text="Origin Latitude: " />
+        <!--<TextView-->
+            <!--android:id="@+id/beg_lat_title"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/ride_time_title"-->
+            <!--android:text="Origin Latitude: "-->
+            <!--tools:visibility="gone" />-->
 
         <TextView
             android:id="@+id/other_id"
@@ -139,27 +141,29 @@
             android:layout_toEndOf="@+id/other_id_title"
             android:text="John Doe" />
 
-        <TextView
-            android:id="@+id/beg_lon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/beg_lat"
-            android:layout_toEndOf="@+id/beg_lon_title"
-            android:text="0" />
+        <!--<TextView-->
+            <!--android:id="@+id/beg_lon"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/beg_lat"-->
+            <!--android:layout_toEndOf="@+id/beg_lon_title"-->
+            <!--android:text="0"-->
+            <!--tools:visibility="gone" />-->
 
-        <TextView
-            android:id="@+id/end_lon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/end_lat"
-            android:layout_toEndOf="@+id/end_lon_title"
-            android:text="0" />
+        <!--<TextView-->
+            <!--android:id="@+id/end_lon"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/end_lat"-->
+            <!--android:layout_toEndOf="@+id/end_lon_title"-->
+            <!--android:text="0"-->
+            <!--tools:visibility="gone" />-->
 
         <TextView
             android:id="@+id/payout"
             android:layout_width="111dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/end_lon"
+            android:layout_below="@+id/ride_time"
             android:layout_toEndOf="@+id/payout_title"
             android:gravity="left"
             android:text="000" />

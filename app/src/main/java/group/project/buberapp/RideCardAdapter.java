@@ -1,6 +1,5 @@
 package group.project.buberapp;
 
-        import android.graphics.Color;
         import android.support.annotation.NonNull;
         import android.support.v7.widget.RecyclerView;
         import android.view.LayoutInflater;
@@ -10,20 +9,12 @@ package group.project.buberapp;
 
         import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
         import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-        import com.google.android.gms.maps.CameraUpdateFactory;
-        import com.google.android.gms.maps.GoogleMap;
-        import com.google.android.gms.maps.OnMapReadyCallback;
-        import com.google.android.gms.maps.model.LatLng;
-        import com.google.android.gms.maps.model.MarkerOptions;
         import com.google.firebase.firestore.CollectionReference;
         import com.google.firebase.firestore.DocumentReference;
         import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RideCardAdapter extends FirestoreRecyclerAdapter<RideCard, RideCardAdapter.RideHolder>
-//        implements OnMapReadyCallback
 {
-    private GoogleMap mMap;
-    private LatLng location;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference RideList = db.collection("Rides");
     private CollectionReference userDoc = db.collection("users");
@@ -35,28 +26,31 @@ public class RideCardAdapter extends FirestoreRecyclerAdapter<RideCard, RideCard
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull RideHolder holder, int position, @NonNull RideCard model)
-    {
-        holder.textViewPickupTime.setText(String.valueOf(model.getPickupTime()));
-        if (UserHome.userType.equals("captain")) {
-            DocumentReference documentReference = userDoc.document(String.valueOf(model.getSeekerID()));
-            String name = String.valueOf(documentReference.get().getResult().get("Name"));
-            holder.textViewSeekerID.setText(name);
-            holder.textViewOtherIDTitle.setText("Rider: ");
-            holder.textViewPayoutTitle.setText("Payout: $");
-        } else {
-            DocumentReference documentReference = capDoc.document(String.valueOf(model.getOffererID()));
-            String name = String.valueOf(documentReference.get().getResult().get("Name"));
-            holder.textViewOffererID.setText(name);
-            holder.textViewOtherIDTitle.setText("Captain: ");
-            holder.textViewPayoutTitle.setText("Cost: $");
+    protected void onBindViewHolder(@NonNull RideHolder holder, int position, @NonNull RideCard model) {
+        if (model.getPickupTime() != null) {
+            holder.textViewPickupTime.setText(model.getPickupTime().toDate().toString());
+            if (UserHome.userType.equals("captain")) {
+//                DocumentReference documentReference = userDoc.document(String.valueOf(model.getSeekerID()));
+//                String name = String.valueOf(documentReference.get().getResult().get("Name"));
+//                holder.textViewSeekerID.setText(name);
+                holder.textViewSeekerID.setText("John Doe");
+                holder.textViewOtherIDTitle.setText("Rider: ");
+                holder.textViewPayoutTitle.setText("Payout: $");
+            } else {
+//                DocumentReference documentReference = capDoc.document(model.getOffererID());
+//                String name = String.valueOf(documentReference.get().getResult().get("Name"));
+//                holder.textViewOffererID.setText(name);
+                holder.textViewOffererID.setText("John Doe");
+                holder.textViewOtherIDTitle.setText("Captain: ");
+                holder.textViewPayoutTitle.setText("Cost: $");
+            }
+            holder.textViewRideTime.setText(String.valueOf(model.getRideTime()));
+    //        holder.textViewBegLat.setText(String.valueOf(model.getBegLat()));
+    //        holder.textViewBegLon.setText(String.valueOf(model.getBegLon()));
+    //        holder.textViewEndLat.setText(String.valueOf(model.getEndLat()));
+    //        holder.textViewEndLon.setText(String.valueOf(model.getEndLon()));
+            holder.textViewPayout.setText(String.valueOf(model.getPayout()));
         }
-        holder.textViewRideTime.setText(model.getRideTime());
-        holder.textViewBegLat.setText(model.getBegLat());
-        holder.textViewBegLon.setText(model.getBegLon());
-        holder.textViewEndLat.setText(model.getEndLat());
-        holder.textViewEndLon.setText(model.getEndLon());
-        holder.textViewPayout.setText(model.getPayout());
     }
 
     @NonNull
@@ -69,15 +63,14 @@ public class RideCardAdapter extends FirestoreRecyclerAdapter<RideCard, RideCard
 
     class RideHolder extends RecyclerView.ViewHolder
     {
-        GoogleMap mMap;
         TextView textViewPickupTime;
         TextView textViewSeekerID;
         TextView textViewOffererID;
         TextView textViewRideTime;
-        TextView textViewBegLat;
-        TextView textViewBegLon;
-        TextView textViewEndLat;
-        TextView textViewEndLon;
+//        TextView textViewBegLat;
+//        TextView textViewBegLon;
+//        TextView textViewEndLat;
+//        TextView textViewEndLon;
         TextView textViewPayout;
         TextView textViewOtherIDTitle;
         TextView textViewPayoutTitle;
@@ -85,7 +78,6 @@ public class RideCardAdapter extends FirestoreRecyclerAdapter<RideCard, RideCard
         public RideHolder(final View itemView)
         {
             super(itemView);
-//            mMap = itemView.findViewById(R.id.history_map);
             textViewPickupTime = itemView.findViewById(R.id.pickup_time);
             textViewPickupTime = itemView.findViewById(R.id.pickup_time);
             if (UserHome.userType.equals("captain")) {
@@ -94,10 +86,10 @@ public class RideCardAdapter extends FirestoreRecyclerAdapter<RideCard, RideCard
                 textViewOffererID = itemView.findViewById(R.id.other_id);
             }
             textViewRideTime = itemView.findViewById(R.id.ride_time);
-            textViewBegLat = itemView.findViewById(R.id.beg_lat);
-            textViewBegLon = itemView.findViewById(R.id.beg_lon);
-            textViewEndLat = itemView.findViewById(R.id.end_lat);
-            textViewEndLon = itemView.findViewById(R.id.end_lon);
+//            textViewBegLat = itemView.findViewById(R.id.beg_lat);
+//            textViewBegLon = itemView.findViewById(R.id.beg_lon);
+//            textViewEndLat = itemView.findViewById(R.id.end_lat);
+//            textViewEndLon = itemView.findViewById(R.id.end_lon);
             textViewPayout = itemView.findViewById(R.id.payout);
             textViewOtherIDTitle = itemView.findViewById(R.id.other_id_title);
             textViewPayoutTitle = itemView.findViewById(R.id.payout_title);

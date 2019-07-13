@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -47,18 +48,13 @@ public class RideHistoryFragment extends Fragment
 
     private void setUpRecyclerView(View view)
     {
-        TextView otherId = view.findViewById(R.id.other_id_title);
-        TextView payoutTitle = view.findViewById(R.id.payout_title);
         Query query;
 
         // checks if captain or rider to query correct rides
         if (UserHome.userType.equals("captain")) {
-            query = rideList.whereEqualTo("OffererID",UserHome.userId);
+            query = rideList.whereEqualTo("OffererID",UserHome.userId).orderBy("pickupTime", Query.Direction.DESCENDING);
         } else {
-//            DocumentReference currentRide = db.collection("users").document("SF");
-            query = rideList.whereEqualTo("SeekerID",UserHome.userId);
-//                    .orderBy("rideTime", Query.Direction.DESCENDING);
-//            .whereEqualTo("SeekerID",String.valueOf(UserHome.userId))
+            query = rideList.whereEqualTo("SeekerID",UserHome.userId).orderBy("pickupTime", Query.Direction.DESCENDING);
         }
 
         FirestoreRecyclerOptions<RideCard> options = new FirestoreRecyclerOptions.Builder<RideCard>().setQuery(query, RideCard.class).build();
