@@ -22,7 +22,7 @@ public class RideCard {
     public RideCard(String pickupTime, String SeekerID, String OffererID, int rideTime, int payout)
 //            , int BegLat, int BegLon, int EndLat, int EndLon
     {
-        this.mMap = mMap;
+//        this.mMap = mMap;
         this.pickupTime = pickupTime;
         this.SeekerID = SeekerID;
         this.OffererID = OffererID;

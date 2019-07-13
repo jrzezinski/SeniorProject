@@ -34,8 +34,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import permissions.dispatcher.RuntimePermissions;
-
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
     private static final String TAG = "MainActivity";
