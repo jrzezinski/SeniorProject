@@ -8,64 +8,86 @@
     android:layout_marginEnd="5dp"
     app:cardBackgroundColor="#FE8">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="5dp">
+        android:orientation="horizontal">
 
-        <!-- Rides time stuff -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ride Time: "
-            android:id="@+id/ride_time_title"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:layout_weight="50">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:layout_toRightOf="@+id/ride_time_title"
-            android:id="@+id/ride_time"/>
+            <!-- Rides time stuff -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ride Time: "
+                android:id="@+id/ride_time_title"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="hour(s)"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/ride_time"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:layout_toRightOf="@+id/ride_time_title"
+                android:id="@+id/ride_time"/>
 
-        <!-- Pickup time stuff -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pickup Time: "
-            android:layout_below="@+id/ride_time_title"
-            android:id="@+id/pickup_time_title"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="hour(s)"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/ride_time"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="12:00 AM"
-            android:layout_toRightOf="@+id/pickup_time_title"
-            android:layout_below="@+id/ride_time"
-            android:id="@+id/pickup_time"/>
+            <!-- Pickup time stuff -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pickup Time: "
+                android:layout_below="@+id/ride_time_title"
+                android:id="@+id/pickup_time_title"/>
 
-        <!-- payout stuff -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Payout: $: "
-            android:layout_below="@+id/pickup_time_title"
-            android:id="@+id/payout_title"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12:00 AM"
+                android:layout_toRightOf="@+id/pickup_time_title"
+                android:layout_below="@+id/ride_time"
+                android:id="@+id/pickup_time"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="000"
-            android:layout_toRightOf="@+id/pickup_time_title"
-            android:layout_below="@+id/pickup_time"
-            android:id="@+id/payout"/>
+            <!-- payout stuff -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Payout: $: "
+                android:layout_below="@+id/pickup_time_title"
+                android:id="@+id/payout_title"/>
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="000"
+                android:layout_toRightOf="@+id/pickup_time_title"
+                android:layout_below="@+id/pickup_time"
+                android:id="@+id/payout"/>
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@+id/job_map_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="50">
+
+            <com.google.android.gms.maps.MapView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/job_card_map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

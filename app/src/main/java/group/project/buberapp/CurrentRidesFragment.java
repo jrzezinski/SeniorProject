@@ -130,7 +130,7 @@ public class CurrentRidesFragment extends Fragment
 
         if (UserHome.userType.equals("captain"))
         {
-            query = jobList.whereEqualTo("OffererID", UserHome.userId);
+            query = jobList.whereEqualTo("OffererID", UserHome.userId).whereGreaterThanOrEqualTo("pickupTime", currentTimeStamp);
         }
         else
         {
