@@ -271,7 +271,7 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
 
         // create bounds od the map markers (north, south, ...)
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(location);
+//        builder.include(location);
         builder.include(currentLocation);
         LatLngBounds bounds = builder.build();
 
