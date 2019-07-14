@@ -44,13 +44,12 @@ public class RideCardAdapter extends FirestoreRecyclerAdapter<RideCard, RideCard
                 DocumentSnapshot temp = (DocumentSnapshot) task.getResult();
                 try { name = temp.get("Name").toString(); }
                 catch (java.lang.NullPointerException e) { name = ""; }
-
                 holder.textViewSeekerID.setText(name);
                 //holder.textViewSeekerID.setText("John Doe");
                 holder.textViewOtherIDTitle.setText("Rider: ");
                 holder.textViewPayoutTitle.setText("Payout: $");
             } else {
-                DocumentReference documentReference = capDoc.document(String.valueOf(model.getSeekerID()));
+                DocumentReference documentReference = capDoc.document(String.valueOf(model.getOffererID()));
                 Task task = documentReference.get();
                 while (!task.isSuccessful()) {}
                 DocumentSnapshot temp = (DocumentSnapshot) task.getResult();

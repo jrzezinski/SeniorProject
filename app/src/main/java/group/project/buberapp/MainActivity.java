@@ -191,24 +191,34 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         String passIn = textPassword.getEditText().getText().toString().trim();
         String passIn2 = textPassword2.getEditText().getText().toString().trim();
 
-        if (passIn.equals(passIn2)) {
+        if (!signupSwitch.isChecked()) {
             if (passIn.isEmpty()) {
                 textPassword.setError("Password cannot be empty");
-                textPassword2.setError("Password cannot be empty");
-                return false;
-            } else if (!isValidPassword(passIn)) {
-                textPassword.setError("Invalid password");
-                textPassword2.setError("Invalid password");
                 return false;
             } else {
                 textPassword.setError(null);
-                textPassword2.setError(null);
                 return true;
             }
         } else {
-            textPassword.setError("Passwords do not match");
-            textPassword2.setError("Passwords do not match");
-            return false;
+            if (passIn.equals(passIn2)) {
+                if (passIn.isEmpty()) {
+                    textPassword.setError("Password cannot be empty");
+                    textPassword2.setError("Password cannot be empty");
+                    return false;
+                } else if (!isValidPassword(passIn)) {
+                    textPassword.setError("Invalid password");
+                    textPassword2.setError("Invalid password");
+                    return false;
+                } else {
+                    textPassword.setError(null);
+                    textPassword2.setError(null);
+                    return true;
+                }
+            } else {
+                textPassword.setError("Passwords do not match");
+                textPassword2.setError("Passwords do not match");
+                return false;
+            }
         }
     }
 
@@ -505,14 +515,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 intent.putExtra("EXTRA_Final_userType", "user");
                                 intent.putExtra("EXTRA_Final_userId", userId);
                                 startActivity(intent);
+                            } else {
+                                Toast.makeText(MainActivity.this, "Incorrect email or password", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
 
-                    if(task.getResult().size() == 0)
-                    {
-                        Toast.makeText(MainActivity.this, "Rider not found! Please sign up!", Toast.LENGTH_SHORT).show();
-                    }
+//                    if(task.getResult().size() == 0)
+//                    {
+//                        Toast.makeText(MainActivity.this, "Rider not found! Please sign up!", Toast.LENGTH_SHORT).show();
+//                    }
                 }
             });
         }
