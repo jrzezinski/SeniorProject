@@ -9,9 +9,16 @@ package group.project.buberapp;
 
         import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
         import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+        import com.google.android.gms.tasks.OnCompleteListener;
+        import com.google.android.gms.tasks.Task;
         import com.google.firebase.firestore.CollectionReference;
         import com.google.firebase.firestore.DocumentReference;
+        import com.google.firebase.firestore.DocumentSnapshot;
+        import com.google.firebase.firestore.EventListener;
         import com.google.firebase.firestore.FirebaseFirestore;
+        import com.google.firebase.firestore.FirebaseFirestoreException;
+
+        import javax.annotation.Nullable;
 
 public class RideCardAdapter extends FirestoreRecyclerAdapter<RideCard, RideCardAdapter.RideHolder>
 {
@@ -19,6 +26,7 @@ public class RideCardAdapter extends FirestoreRecyclerAdapter<RideCard, RideCard
     private CollectionReference RideList = db.collection("Rides");
     private CollectionReference userDoc = db.collection("users");
     private CollectionReference capDoc = db.collection("captain");
+    private String name;
 
     public RideCardAdapter(@NonNull FirestoreRecyclerOptions<RideCard> options)
     {
@@ -30,17 +38,26 @@ public class RideCardAdapter extends FirestoreRecyclerAdapter<RideCard, RideCard
         if (model.getPickupTime() != null) {
             holder.textViewPickupTime.setText(model.getPickupTime().toDate().toString());
             if (UserHome.userType.equals("captain")) {
-//                DocumentReference documentReference = userDoc.document(String.valueOf(model.getSeekerID()));
-//                String name = String.valueOf(documentReference.get().getResult().get("Name"));
-//                holder.textViewSeekerID.setText(name);
-                holder.textViewSeekerID.setText("John Doe");
+                DocumentReference documentReference = userDoc.document(String.valueOf(model.getSeekerID()));
+                Task task = documentReference.get();
+                while (!task.isSuccessful()) {}
+                DocumentSnapshot temp = (DocumentSnapshot) task.getResult();
+                try { name = temp.get("Name").toString(); }
+                catch (java.lang.NullPointerException e) { name = ""; }
+
+                holder.textViewSeekerID.setText(name);
+                //holder.textViewSeekerID.setText("John Doe");
                 holder.textViewOtherIDTitle.setText("Rider: ");
                 holder.textViewPayoutTitle.setText("Payout: $");
             } else {
-//                DocumentReference documentReference = capDoc.document(model.getOffererID());
-//                String name = String.valueOf(documentReference.get().getResult().get("Name"));
-//                holder.textViewOffererID.setText(name);
-                holder.textViewOffererID.setText("John Doe");
+                DocumentReference documentReference = capDoc.document(String.valueOf(model.getSeekerID()));
+                Task task = documentReference.get();
+                while (!task.isSuccessful()) {}
+                DocumentSnapshot temp = (DocumentSnapshot) task.getResult();
+                try { name = temp.get("Name").toString(); }
+                catch (java.lang.NullPointerException e) { name = ""; }
+                holder.textViewOffererID.setText(name);
+                //holder.textViewOffererID.setText("John Doe");
                 holder.textViewOtherIDTitle.setText("Captain: ");
                 holder.textViewPayoutTitle.setText("Cost: $");
             }

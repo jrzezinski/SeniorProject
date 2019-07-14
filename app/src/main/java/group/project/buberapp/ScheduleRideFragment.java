@@ -152,28 +152,35 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
                 String pickup = pickupTime.getText().toString();
                 int hoursChosen = Integer.parseInt(hourSelect.getSelectedItem().toString());
 
-                // Store user info
-                Map<String,Object> myRide = new HashMap<String,Object>();
-                myRide.put("payout", payout);
-                myRide.put("pickupTime", pickupTimeStamp);
-                myRide.put("rideTime", hoursChosen);
-                myRide.put("RideEndLoc", location);
-                myRide.put("RideStartLoc", currentLocation);
-                myRide.put("SeekerID", UserHome.userId);
-                myRide.put("OffererID", null);
+                if (pickup == null)
+                {
+                    // Store user info
+                    Map<String, Object> myRide = new HashMap<String, Object>();
+                    myRide.put("payout", payout);
+                    myRide.put("pickupTime", pickupTimeStamp);
+                    myRide.put("rideTime", hoursChosen);
+                    myRide.put("RideEndLoc", location);
+                    myRide.put("RideStartLoc", currentLocation);
+                    myRide.put("SeekerID", UserHome.userId);
+                    myRide.put("OffererID", null);
 
-                // Send info to Database
-                jobList.add(myRide).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(getContext(), "Ride Scheduled! Please wait for a pickup.", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), "Ride scheduling failed, try again.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    // Send info to Database
+                    jobList.add(myRide).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(getContext(), "Ride Scheduled! Please wait for a pickup.", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(), "Ride scheduling failed, try again.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else
+                {
+                    Toast.makeText(getContext(), "You must specify a pickup time!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
