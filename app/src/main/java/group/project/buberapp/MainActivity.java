@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // Fields from app
     private TextInputLayout textEmail;
     private TextInputLayout textPassword;
+    private TextInputLayout textPassword2;
     private TextInputLayout textName;
     private TextInputLayout textPhone;
     private TextInputLayout textDriverId;
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // initialize the app fields
         textEmail = findViewById(R.id.text_input_email);
         textPassword = findViewById(R.id.text_input_password);
+        textPassword2 = findViewById(R.id.text_input_password2);
         textName = findViewById(R.id.text_input_name);
         textPhone = findViewById(R.id.text_input_phone);
         textDriverId = findViewById(R.id.text_input_driverId);
@@ -116,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinner.setOnItemSelectedListener(this);
 
         // hide non applicable options
+        textPassword2.setVisibility(View.GONE);
         textName.setVisibility(View.GONE);
         textPhone.setVisibility(View.GONE);
         typeSelect.setVisibility(View.GONE);
@@ -186,24 +189,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private boolean checkPass()
     {
         String passIn = textPassword.getEditText().getText().toString().trim();
-//        String passIn2 = textPassword2.getEditText().getText().toString().trim();
+        String passIn2 = textPassword2.getEditText().getText().toString().trim();
 
-//        if (passIn == passIn2) {
+        if (passIn.equals(passIn2)) {
             if (passIn.isEmpty()) {
                 textPassword.setError("Password cannot be empty");
+                textPassword2.setError("Password cannot be empty");
                 return false;
             } else if (!isValidPassword(passIn)) {
                 textPassword.setError("Invalid password");
+                textPassword2.setError("Invalid password");
                 return false;
             } else {
                 textPassword.setError(null);
+                textPassword2.setError(null);
                 return true;
             }
-//        } else {
-//            textPassword.setError("Passwords do not match");
-//            textPassword2.setError("Passwords do not match");
-//            return false;
-//        }
+        } else {
+            textPassword.setError("Passwords do not match");
+            textPassword2.setError("Passwords do not match");
+            return false;
+        }
     }
 
     private boolean checkName()
@@ -232,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Pattern pattern;
         Matcher matcher;
 
-        final String PASSWORD_PATTERN = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$;";
+        final String PASSWORD_PATTERN = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
 
         pattern = Pattern.compile(PASSWORD_PATTERN);
         matcher = pattern.matcher(password);
@@ -329,13 +335,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task)
                 {
-                    if (task.isSuccessful())
-                    {
+                    if (task.getResult().size() > 0) {
                         Toast.makeText(MainActivity.this, "Email found! Please sign in instead!", Toast.LENGTH_SHORT).show();
-                    }
-
-                    if(task.getResult().size() == 0)
-                    {
+                    } else if(task.getResult().size() == 0) {
                         // add captain to DB
                         capRef.add(myCap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
@@ -370,13 +372,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                   @Override
                   public void onComplete(@NonNull Task<QuerySnapshot> task)
                   {
-                      if (task.isSuccessful())
-                      {
+                      if (task.getResult().size() > 0) {
                           Toast.makeText(MainActivity.this, "Email found! Please sign in instead!", Toast.LENGTH_SHORT).show();
-                      }
-
-                      if(task.getResult().size() == 0)
-                      {
+                      } else if(task.getResult().size() == 0) {
                           // add user to DB
                           userRef.add(myUser).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                               @Override
@@ -523,6 +521,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // captain switch check, reveals/hides fields for captain signup
         if(signupSwitch.isChecked() && captainSwitch.isChecked())
         {
+            textPassword2.setVisibility(View.VISIBLE);
             textName.setVisibility(View.VISIBLE);
             textPhone.setVisibility(View.VISIBLE);
             //typeSelect.setVisibility(View.VISIBLE);
@@ -538,6 +537,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // signup switch check, reveals/hides fields for user signup
         else if(signupSwitch.isChecked())
         {
+            textPassword2.setVisibility(View.VISIBLE);
             textName.setVisibility(View.VISIBLE);
             textPhone.setVisibility(View.VISIBLE);
             //typeSelect.setVisibility(View.GONE);
@@ -553,6 +553,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         else if(captainSwitch.isChecked())
         {
+            textPassword2.setVisibility(View.GONE);
             textName.setVisibility(View.GONE);
             textPhone.setVisibility(View.GONE);
             //typeSelect.setVisibility(View.GONE);
@@ -568,6 +569,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         else
         {
+            textPassword2.setVisibility(View.GONE);
             textName.setVisibility(View.GONE);
             textPhone.setVisibility(View.GONE);
             //typeSelect.setVisibility(View.GONE);
