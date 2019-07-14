@@ -257,10 +257,6 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
             MarkerOptions options = new MarkerOptions().position(location);
             mMap.addMarker(options);
         }
-        else
-        {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.0f));
-        }
 
         // if user current location is given mark that additionally
         if(currentLocation != null)
@@ -271,7 +267,7 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
 
         // create bounds od the map markers (north, south, ...)
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-//        builder.include(location);
+        builder.include(location);
         builder.include(currentLocation);
         LatLngBounds bounds = builder.build();
 

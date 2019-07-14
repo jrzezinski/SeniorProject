@@ -26,6 +26,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -62,6 +63,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         searchText = view.findViewById(R.id.search_text);
         toScheduleButton = view.findViewById(R.id.map_checkout_button);
+
+        // Hide schedule button
+        toScheduleButton.setVisibility(View.INVISIBLE);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
@@ -110,7 +114,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 CharSequence input = searchText.getText();
-                listener.onInputMapSent(input, userLocation);
+                LatLng validLoc = searchLocation(input.toString());
+
+                if (validLoc != null)
+                {
+                    listener.onInputMapSent(input, userLocation);
+                }
+                else
+                {
+                    toScheduleButton.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getContext(), "You must have a valid search location first!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
