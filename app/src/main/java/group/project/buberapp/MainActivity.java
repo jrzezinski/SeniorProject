@@ -21,6 +21,8 @@ import android.widget.EditText;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -131,6 +133,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         riderLogin.setVisibility(View.VISIBLE);
     }
 
+    public boolean isValidEmail(final String password) {
+
+        Pattern pattern;
+        Matcher matcher;
+
+        final String PASSWORD_PATTERN = "^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])$";
+
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+
+        return matcher.matches();
+
+    }
+
     // The four check functions use local validation ***Just for testing***
     private boolean checkEmail()
     {
@@ -138,7 +154,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if (emailIn.isEmpty())
         {
-            textEmail.setError("Please use a valid email.");
+            textEmail.setError("Email cannot be empty");
+            return false;
+        }
+        else if (!isValidEmail(emailIn))
+        {
+            textEmail.setError("Invalid email");
             return false;
         }
         else
@@ -148,25 +169,41 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    public boolean isValidPassword(final String password) {
+
+        Pattern pattern;
+        Matcher matcher;
+
+        final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])((?=.*[!@#$%^&*\\-+=])|(?=.*[0-9])).{8,}$";
+
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+
+        return matcher.matches();
+
+    }
+
     private boolean checkPass()
     {
         String passIn = textPassword.getEditText().getText().toString().trim();
+//        String passIn2 = textPassword2.getEditText().getText().toString().trim();
 
-        if (passIn.isEmpty())
-        {
-            textPassword.setError("Field cannot be empty.");
-            return false;
-        }
-        else if (passIn.length() > 30)
-        {
-            textPassword.setError("Password too long.");
-            return false;
-        }
-        else
-        {
-            textPassword.setError(null);
-            return true;
-        }
+//        if (passIn == passIn2) {
+            if (passIn.isEmpty()) {
+                textPassword.setError("Password cannot be empty");
+                return false;
+            } else if (!isValidPassword(passIn)) {
+                textPassword.setError("Invalid password");
+                return false;
+            } else {
+                textPassword.setError(null);
+                return true;
+            }
+//        } else {
+//            textPassword.setError("Passwords do not match");
+//            textPassword2.setError("Passwords do not match");
+//            return false;
+//        }
     }
 
     private boolean checkName()
@@ -175,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if (nameIn.isEmpty())
         {
-            textName.setError("Field cannot be empty.");
+            textName.setError("Field cannot be empty");
             return false;
         }
         else if (nameIn.length() > 30)
@@ -190,13 +227,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    public boolean isValidPhone(final String password) {
+
+        Pattern pattern;
+        Matcher matcher;
+
+        final String PASSWORD_PATTERN = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$;";
+
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+
+        return matcher.matches();
+
+    }
+
     private boolean checkPhone()
     {
         String phoneIn = textPhone.getEditText().getText().toString().trim();
 
-        if (phoneIn.isEmpty())
+        if (!isValidPhone(phoneIn))
         {
-            textPhone.setError("Please use a valid Phone number.");
+            textPhone.setError("Invalid phone number");
             return false;
         }
         else
@@ -212,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if (driverIn.isEmpty())
         {
-            textDriverId.setError("Please use a valid Liscence Number.");
+            textDriverId.setError("Invalid license number");
             return false;
         }
         else
@@ -228,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if (boatIn.isEmpty())
         {
-            textBoatId.setError("Please use a valid email.");
+            textBoatId.setError("Invalid boating license number");
             return false;
         }
         else
