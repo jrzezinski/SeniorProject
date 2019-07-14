@@ -329,29 +329,37 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             // Use this block to check if field exists and add user if not
             final String currentEmail = textEmail.getEditText().getText().toString().trim();
-            Query query = capRef.whereEqualTo("Email", currentEmail);
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-            {
+            capRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task)
-                {
-                    if (task.getResult().size() > 0) {
-                        Toast.makeText(MainActivity.this, "Email found! Please sign in instead!", Toast.LENGTH_SHORT).show();
-                    } else if(task.getResult().size() == 0) {
-                        // add captain to DB
-                        capRef.add(myCap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Toast.makeText(MainActivity.this, "User Saved", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(MainActivity.this, MainActivity.class));
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, e.toString());
-                            }
-                        });
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        // checks and counts duplicate
+                        int i = 0;
+                        for (DocumentSnapshot document : task.getResult()) {
+                            String email = document.getString("Email");
+                            if (email.equals(currentEmail)) { i++;};
+                        }
+                        if (i > 0) {
+                            // if any found, tell user to log in
+                            Toast.makeText(MainActivity.this, "Email found! Please sign in instead!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // otherwise, add user to DB
+                            capRef.add(myUser).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Toast.makeText(MainActivity.this, "User Saved", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                                    Log.d(TAG, e.toString());
+                                }
+                            });
+                        }
+                    } else {
+                        Log.d("TAG", "Error getting documents: ", task.getException());
                     }
                 }
             });
@@ -366,31 +374,40 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             // Use this block to check if field exists and add user if not
             final String currentEmail = textEmail.getEditText().getText().toString().trim();
-            Query query = capRef.whereEqualTo("Email", currentEmail);
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-            {
-                  @Override
-                  public void onComplete(@NonNull Task<QuerySnapshot> task)
-                  {
-                      if (task.getResult().size() > 0) {
-                          Toast.makeText(MainActivity.this, "Email found! Please sign in instead!", Toast.LENGTH_SHORT).show();
-                      } else if(task.getResult().size() == 0) {
-                          // add user to DB
-                          userRef.add(myUser).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                              @Override
-                              public void onSuccess(DocumentReference documentReference) {
-                                  Toast.makeText(MainActivity.this, "User Saved", Toast.LENGTH_SHORT).show();
-                                  startActivity(new Intent(MainActivity.this, MainActivity.class));
-                              }
-                          }).addOnFailureListener(new OnFailureListener() {
-                              @Override
-                              public void onFailure(@NonNull Exception e) {
-                                  Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
-                                  Log.d(TAG, e.toString());
-                              }
-                          });
-                      }
-                  }
+
+            userRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        // checks and counts duplicate
+                        int i = 0;
+                        for (DocumentSnapshot document : task.getResult()) {
+                            String email = document.getString("Email");
+                            if (email.equals(currentEmail)) { i++;};
+                        }
+                        if (i > 0) {
+                            // if any found, tell user to log in
+                            Toast.makeText(MainActivity.this, "Email found! Please sign in instead!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // otherwise, add user to DB
+                            userRef.add(myUser).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Toast.makeText(MainActivity.this, "User Saved", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                                    Log.d(TAG, e.toString());
+                                }
+                            });
+                        }
+                    } else {
+                        Log.d("TAG", "Error getting documents: ", task.getException());
+                    }
+                }
             });
         }
         else if(captainSwitch.isChecked())
