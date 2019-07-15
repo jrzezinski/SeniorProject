@@ -91,7 +91,6 @@
             android:id="@+id/text_input_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:counterEnabled="true"
             app:passwordToggleEnabled="true"
             app:errorEnabled="true">
 
@@ -109,7 +108,6 @@
             android:id="@+id/text_input_password2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:counterEnabled="true"
             app:errorEnabled="true"
             app:passwordToggleEnabled="true">
 

@@ -464,6 +464,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 intent.putExtra("EXTRA_Final_boatId", boatId);
                                 intent.putExtra("EXTRA_Final_userDL", userDL);
                                 startActivity(intent);
+                            } else if (email.equals(currentEmail) && !(pass.equals(currentPass))) {
+                                Toast.makeText(MainActivity.this, "Forgot your password? Email us: emBarcoApp@gmail.com!", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -515,16 +517,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 intent.putExtra("EXTRA_Final_userType", "user");
                                 intent.putExtra("EXTRA_Final_userId", userId);
                                 startActivity(intent);
-                            } else {
-                                Toast.makeText(MainActivity.this, "Incorrect email or password", Toast.LENGTH_SHORT).show();
+                            } else if (email.equals(currentEmail) && !(pass.equals(currentPass))) {
+                                Toast.makeText(MainActivity.this, "Forgot your password? Email us:  emBarcoApp@gmail.com!", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
 
-//                    if(task.getResult().size() == 0)
-//                    {
-//                        Toast.makeText(MainActivity.this, "Rider not found! Please sign up!", Toast.LENGTH_SHORT).show();
-//                    }
+                    if(task.getResult().size() == 0)
+                    {
+                        Toast.makeText(MainActivity.this, "Rider not found! Please sign up!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
