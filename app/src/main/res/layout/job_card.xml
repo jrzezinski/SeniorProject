@@ -61,7 +61,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Payout: $: "
-                android:layout_below="@+id/pickup_time_title"
+                android:layout_below="@+id/pickup_time"
+                android:layout_toLeftOf="@+id/pickup_time"
                 android:id="@+id/payout_title"/>
 
             <TextView
