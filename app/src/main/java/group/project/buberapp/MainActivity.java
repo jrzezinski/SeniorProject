@@ -206,8 +206,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     textPassword2.setError("Password cannot be empty");
                     return false;
                 } else if (!isValidPassword(passIn)) {
-                    textPassword.setError("Invalid password");
-                    textPassword2.setError("Invalid password");
+                    textPassword.setError("Min 8 chars with 3/4: uppercase, lowercase, numbers, & symbols");
+                    textPassword2.setError("Min 8 chars with 3/4: uppercase, lowercase, numbers, & symbols");
                     return false;
                 } else {
                     textPassword.setError(null);

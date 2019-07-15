@@ -92,7 +92,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:counterEnabled="true"
-            app:counterMaxLength="30"
             app:passwordToggleEnabled="true"
             app:errorEnabled="true">
 
@@ -111,7 +110,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:counterEnabled="true"
-            app:counterMaxLength="30"
             app:errorEnabled="true"
             app:passwordToggleEnabled="true">
 
