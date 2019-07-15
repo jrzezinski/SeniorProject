@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import io.opencensus.internal.StringUtil;
 
 public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback, AdapterView.OnItemSelectedListener
 {
@@ -134,7 +137,7 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
         });
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map_schedule);
+        final SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map_schedule);
         mapFragment.getMapAsync(this);
 
         finalCost = view.findViewById(R.id.val_estimate);
@@ -144,23 +147,27 @@ public class ScheduleRideFragment extends Fragment implements OnMapReadyCallback
             @Override
             public void onClick(View v)
             {
-                switchButton.setVisibility(View.GONE);
-                launchPayButton.setVisibility(View.VISIBLE);
-
                 // get user info
                 int payout = Integer.parseInt(finalCost.getText().toString());
                 String pickup = pickupTime.getText().toString();
                 int hoursChosen = Integer.parseInt(hourSelect.getSelectedItem().toString());
 
-                if (pickup == null)
+                if (!TextUtils.isEmpty(pickup))
                 {
+                    switchButton.setVisibility(View.GONE);
+                    launchPayButton.setVisibility(View.VISIBLE);
+
                     // Store user info
                     Map<String, Object> myRide = new HashMap<String, Object>();
                     myRide.put("payout", payout);
                     myRide.put("pickupTime", pickupTimeStamp);
                     myRide.put("rideTime", hoursChosen);
-                    myRide.put("RideEndLoc", location);
-                    myRide.put("RideStartLoc", currentLocation);
+
+                    myRide.put("RideEndLocLat", location.latitude);
+                    myRide.put("RideEndLocLong", location.longitude);
+                    myRide.put("RideStartLocLat", currentLocation.latitude);
+                    myRide.put("RideStartLocLong", currentLocation.longitude);
+
                     myRide.put("SeekerID", UserHome.userId);
                     myRide.put("OffererID", null);
 

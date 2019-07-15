@@ -32,8 +32,16 @@ public class JobCardAdapter extends FirestoreRecyclerAdapter<JobCard, JobCardAda
 {
     private onItemClickListener listener;
 
-    private Map<Integer, Integer> startLoc;
-    private Map<Integer, Integer> endLoc;
+    private double startLocLat;
+    private double startLocLong;
+    private double endLocLat;
+    private double endLocLong;
+
+    private LatLng currentLocation;
+    private LatLng location;
+
+    int width;
+    int height;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference jobList = db.collection("Rides");
@@ -48,52 +56,28 @@ public class JobCardAdapter extends FirestoreRecyclerAdapter<JobCard, JobCardAda
         holder.textViewRideTime.setText(String.valueOf(model.getRideTime()));
         holder.textViewPickupTime.setText(model.getPickupTime().toDate().toString());
         holder.textViewPayout.setText(String.valueOf(model.getPayout()));
-        startLoc = model.getLocationStart();
-        startLoc = model.getLocationEnd();
+        startLocLat = model.getRideStartLocLat();
+        startLocLong = model.getRideStartLocLong();
+        endLocLat = model.getRideEndLocLat();
+        endLocLong = model.getRideEndLocLong();
 
         GoogleMap tripMap = holder.tripMap;
 
-        if (tripMap != null)
+        currentLocation = new LatLng(startLocLat, startLocLong);
+        location = new LatLng(endLocLat, endLocLong);
+
+        width = holder.mapView.getContext().getResources().getDisplayMetrics().widthPixels;
+        height = holder.mapView.getContext().getResources().getDisplayMetrics().heightPixels;
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull JobHolder holder) {
+        super.onViewRecycled(holder);
+
+        if (holder.tripMap != null)
         {
-            double startLat = 28.056999 ;
-            double startLong = -82.425987;
-            double endLat = 28.056999;
-            double endLong = -82.425987;
-
-            if (startLoc != null)
-            {
-                startLat = startLoc.get("latitude");
-                startLong = startLoc.get("longitude");
-            }
-
-            if (endLoc != null)
-            {
-                endLat = endLoc.get("latitude");
-                endLong = endLoc.get("longitude");
-            }
-
-            LatLng currentLocation = new LatLng(startLat, startLong);
-            LatLng location = new LatLng(endLat, endLong);
-
-            MarkerOptions optionsStart = new MarkerOptions().position(currentLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-            MarkerOptions optionsEnd = new MarkerOptions().position(new LatLng(endLat, endLong));
-
-            tripMap.addMarker(optionsStart);
-            tripMap.addMarker(optionsEnd);
-
-            // create bounds od the map markers (north, south, ...)
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            builder.include(location);
-            builder.include(currentLocation);
-            LatLngBounds bounds = builder.build();
-
-            // create the padding to keep markers away from map edge
-            int width = holder.mapView.getContext().getResources().getDisplayMetrics().widthPixels;
-            int height = holder.mapView.getContext().getResources().getDisplayMetrics().heightPixels;
-            int padding = (int) (height * 0.20);
-
-            // move the camera too the correct zoom for the points
-            tripMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding));
+            holder.tripMap.clear();
+            holder.tripMap.setMapType(GoogleMap.MAP_TYPE_NONE);
         }
     }
 
@@ -153,7 +137,23 @@ public class JobCardAdapter extends FirestoreRecyclerAdapter<JobCard, JobCardAda
             MapsInitializer.initialize(mapView.getContext());
             tripMap = googleMap;
 
+            MarkerOptions optionsStart = new MarkerOptions().position(currentLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            MarkerOptions optionsEnd = new MarkerOptions().position(location);
 
+            tripMap.addMarker(optionsStart);
+            tripMap.addMarker(optionsEnd);
+
+            // create bounds od the map markers (north, south, ...)
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            builder.include(location);
+            builder.include(currentLocation);
+            LatLngBounds bounds = builder.build();
+
+            // create the padding to keep markers away from map edge
+            int padding = (int) (height * 0.20);
+
+            // move the camera too the correct zoom for the points
+            tripMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding));
 
             //tripMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(startLat, startLong), 10));
         }

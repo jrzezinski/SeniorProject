@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -109,6 +110,8 @@ public class CurrentRidesFragment extends Fragment
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Toast.makeText(getContext(), "Ride Deleted", Toast.LENGTH_SHORT).show();
+                                FragmentTransaction tr = getFragmentManager().beginTransaction();
+                                tr.replace(R.id.fragment_container, new CurrentRidesFragment()).commit();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
