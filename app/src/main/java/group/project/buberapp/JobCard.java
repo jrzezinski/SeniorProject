@@ -9,21 +9,25 @@ public class JobCard
     private int rideTime;
     private Timestamp pickupTime;
     private int payout;
-    private Map<Integer, Integer> locationStart;
-    private Map<Integer, Integer> locationEnd;
+    private double RideEndLocLat;
+    private double RideEndLocLong;
+    private double RideStartLocLat;
+    private double RideStartLocLong;
 
     public JobCard()
     {
         // empty constructor needed
     }
 
-    public JobCard(int rideTime, Timestamp pickupTime, int payout, Map<Integer, Integer> locationStart, Map<Integer, Integer> locationEnd)
+    public JobCard(int rideTime, Timestamp pickupTime, int payout, double RideEndLocLat, double RideEndLocLong, double RideStartLocLat, double RideStartLocLong)
     {
         this.rideTime = rideTime;
         this.pickupTime = pickupTime;
         this.payout = payout;
-        this.locationStart = locationStart;
-        this.locationEnd = locationEnd;
+        this.RideStartLocLat = RideStartLocLat;
+        this.RideStartLocLong = RideStartLocLong;
+        this.RideEndLocLat = RideEndLocLat;
+        this.RideEndLocLong = RideEndLocLong;
     }
 
     public int getRideTime()
@@ -41,7 +45,19 @@ public class JobCard
         return payout;
     }
 
-    public Map<Integer, Integer> getLocationStart() { return locationStart; }
+    public double getRideEndLocLat() {
+        return RideEndLocLat;
+    }
 
-    public Map<Integer, Integer> getLocationEnd() { return locationEnd; }
+    public double getRideEndLocLong() {
+        return RideEndLocLong;
+    }
+
+    public double getRideStartLocLat() {
+        return RideStartLocLat;
+    }
+
+    public double getRideStartLocLong() {
+        return RideStartLocLong;
+    }
 }
